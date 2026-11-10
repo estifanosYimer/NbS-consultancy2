@@ -20,7 +20,7 @@ Double-click `run_local.bat`. It installs Node.js if needed, installs the packag
 | Families of measures | `src/data/families.json` |
 | Tools (all three languages) | `src/data/tools-full.json` |
 | Blog posts (English) | `src/data/posts.json` |
-| Videos (all with sound) | `public/media/*.mp4` |
+| Videos (narrated in English, with a quiet music bed) | `public/media/*.mp4` |
 
 ### The "Book a 20-min call" button
 `booking` in `src/data/site.ts` is empty, so every booking button opens the contact form with "Book a free 20-minute call" already selected. If you set up Cal.com, Calendly or Microsoft Bookings later, paste that link into `booking` and all the buttons will use it.
@@ -32,6 +32,9 @@ The form sends to Formspree (`https://formspree.io/f/xanoykkz`), the same form t
 - English lives at `/`, Dutch at `/nl/` and French at `/fr/`. The EN · NL · FR switcher keeps you on the same page.
 - **The Dutch and French text needs to be checked by a native speaker before launch.**
 - Blog posts are in English only. In NL and FR they are labelled "Article in English".
+
+### If NL or FR pages show "404"
+The Dutch and French pages are built from the folder `src/pages/[lang]` (with the square brackets). Check that this folder is in your GitHub repository with all its sub-folders. If it is missing, upload it again.
 
 ## Placeholders to replace before launch
 - Projects: the Flanders and Ethiopia project summaries (marked "Coming soon").
