@@ -9,7 +9,6 @@ export default defineConfig({
   site: SITE,
   trailingSlash: 'ignore',
   build: { format: 'directory', inlineStylesheets: 'always', assets: 'assets' },
-  // Stage 1: only finished pages go into the sitemap. Remove the filter once all pages are rebuilt.
-  integrations: [sitemap({ filter: (page) => new URL(page).pathname === '/' })],
+  integrations: [sitemap({ i18n: { defaultLocale: 'en', locales: { en: 'en', nl: 'nl', fr: 'fr' } } })],
   prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
 });
