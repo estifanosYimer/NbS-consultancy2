@@ -48,7 +48,7 @@ const more = related.length < 4 ? sols.filter((x) => x.family !== s.family && !x
         <div class="note"><b>IUCN Global Standard.</b> {S.iucn}</div>
       </div>
       <div>
-        {fam.film && <div class="filmbox"><h2 class="h">{S.watch}</h2><FilmCard film={fam.film} title={fam.name} dur="0:38" /></div>}
+        {fam.film && <div class="filmbox"><h2 class="h">{S.watch}</h2><FilmCard film={fam.film} title={fam.name} /></div>}
         {tools.length > 0 && (
           <div>
             <h2 class="h">{S.tools}</h2>

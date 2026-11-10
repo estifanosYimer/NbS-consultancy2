@@ -4,7 +4,7 @@ import FilmCard from '../components/FilmCard.astro';
 import { Image } from 'astro:assets';
 import shot from '../assets/suitability-gui.jpg';
 import { bookHref } from '../data/site';
-import { solsFor, toolsFor } from '../i18n/data';
+import { famsFor, solsFor, toolsFor } from '../i18n/data';
 import { fmt, lp, t, type Lang } from '../i18n/ui';
 interface Props { lang: Lang; id: string }
 const { lang, id } = Astro.props;
@@ -15,6 +15,7 @@ const x = all.find((y) => y.id === id)!;
 const idx = all.indexOf(x);
 const next = all[(idx + 1) % all.length];
 const sols = (await solsFor(lang)).filter((s) => s.tools.includes(id) && !s.supporting);
+const groups = famsFor(lang).map((f) => ({ f, list: sols.filter((s) => s.family === f.id) })).filter((g) => g.list.length);
 ---
 <Base title={fmt(X.detailTitle, { t: x.n })} description={`${x.q} ${x.plain}`} lang={lang}>
   <section class="phead cream">
@@ -23,7 +24,7 @@ const sols = (await solsFor(lang)).filter((s) => s.tools.includes(id) && !s.supp
         <p class="crumbs"><a href={L('/tools/')}>{T.nav.tools}</a></p>
         <p class="eyebrow">{x.q}</p>
         <h1>{x.n}</h1>
-        <p><span class={`status ${x.statusClass}`}>{x.status}</span></p>
+        <p class="meta"><span class={`status ${x.statusClass}`}>{x.status}</span><span class="for"><b>{X.who}:</b> {x.w}</span></p>
         <p class="lead" style="margin-top:16px">{x.plain}</p>
         <div class="cta-row">
           <a class="btn btn-primary" href={L(`/contact/?topic=demo&tool=${encodeURIComponent(x.n)}#form`)}>{X.demo} →</a>
@@ -37,30 +38,35 @@ const sols = (await solsFor(lang)).filter((s) => s.tools.includes(id) && !s.supp
       </div>
     </div>
   </section>
-  <section>
+  <section class="info">
     <div class="wrap">
-      <div class="grid g3 blocks">
+      <div class="grid g4 blocks">
         <div class="card"><h2 class="h">{X.bring}</h2><ul class="list">{x.inputs.map((i) => <li>{i}</li>)}</ul></div>
         <div class="card"><h2 class="h">{X.get}</h2><ul class="list">{x.outputs.map((i) => <li>{i}</li>)}</ul></div>
         <div class="card"><h2 class="h">{X.session}</h2><ol class="steps">{x.session.map((i) => <li>{i}</li>)}</ol></div>
+        <div class="card eng"><h2 class="h">{X.eng}{lang !== 'en' && <span lang="en"> (English)</span>}</h2><p lang="en">{x.tech}</p></div>
       </div>
-      <div class="grid g2 low">
-        <div><h2 class="h">{X.who}</h2><p>{x.w}</p></div>
-        <details class="eng"><summary>{X.eng}{lang !== 'en' && <span lang="en"> (English)</span>}</summary><p lang="en">{x.tech}</p></details>
-      </div>
-      {id === 'studio' && <p class="note" style="margin-top:28px;max-width:90ch" set:html={X.studioNote} />}
+      {id === 'studio' && <p class="note" style="margin-top:20px;max-width:90ch" set:html={X.studioNote} />}
     </div>
   </section>
-  {sols.length > 0 && (
-    <section class="cream">
-      <div class="wrap">
-        <div class="head"><h2>{X.sols}</h2></div>
-        <div class="chips">{sols.map((s) => <a class="chip" href={L(`/solutions/${s.id}/`)}>{s.title}</a>)}</div>
-        <p class="navl"><a href={L('/tools/')}>{X.allTools}</a><a href={L(`/tools/${next.id}/`)}>{next.n} →</a></p>
-      </div>
-    </section>
-  )}
-  {sols.length === 0 && <section class="cream"><div class="wrap"><p class="navl"><a href={L('/tools/')}>{X.allTools}</a><a href={L(`/tools/${next.id}/`)}>{next.n} →</a></p></div></section>}
+  <section class="cream">
+    <div class="wrap">
+      {groups.length > 0 && (
+        <>
+          <div class="head"><h2>{X.sols} <span class="n">{sols.length}</span></h2></div>
+          <div class="groups">
+            {groups.map(({ f, list }) => (
+              <div class="card grp">
+                <h3><a href={L(`/solutions/#${f.id}`)}>{f.name}</a></h3>
+                <ul>{list.map((s) => <li><a href={L(`/solutions/${s.id}/`)}>{s.title}</a></li>)}</ul>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+      <p class="navl"><a href={L('/tools/')}>{X.allTools}</a><a href={L(`/tools/${next.id}/`)}>{next.n} →</a></p>
+    </div>
+  </section>
 </Base>
 <style>
   .hero { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
@@ -71,10 +77,21 @@ const sols = (await solsFor(lang)).filter((s) => s.tools.includes(id) && !s.supp
   .steps { counter-reset: s; list-style: none; display: grid; gap: 8px; }
   .steps li { counter-increment: s; position: relative; padding-left: 34px; }
   .steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--forest); color: #fff; font: 600 .76rem var(--mono); display: grid; place-items: center; }
-  .low { margin-top: 32px; gap: 32px; }
-  .eng { border: 1px solid var(--line); border-radius: var(--r); padding: 14px 18px; background: var(--paper); }
-  .eng summary { cursor: pointer; font-weight: 700; color: var(--forest); }
-  .eng p { margin-top: 10px; font-size: .95rem; color: var(--ink-soft); }
+  .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+  .for { color: var(--ink-soft); font-size: .95rem; } .for b { color: var(--forest); }
+  .info { padding: clamp(40px, 6vw, 72px) 0; }
+  .blocks { align-items: stretch; }
+  .eng p { font-size: .92rem; color: var(--ink-soft); }
+  .head .n { font: 600 .9rem var(--mono); color: var(--leaf); vertical-align: middle; }
+  .groups { columns: 3 300px; column-gap: 16px; }
+  .groups .grp { break-inside: avoid; margin-bottom: 16px; }
+  .grp { border-top: 4px solid var(--sage); padding: 20px 22px; }
+  .grp h3 { font-size: 1.1rem; margin-bottom: 10px; }
+  .grp h3 a { color: var(--forest); text-decoration: none; } .grp h3 a:hover { text-decoration: underline; }
+  .grp ul { list-style: none; display: grid; gap: 2px; }
+  .grp li a { display: block; padding: 7px 10px; margin: 0 -10px; border-radius: 8px; color: var(--ink); text-decoration: none; font-size: .95rem; }
+  .grp li a:hover { background: var(--sage-tint); color: var(--forest); }
+  .grp li a::after { content: ' →'; color: var(--sage); }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .chip { text-decoration: none; font-weight: 600; font-size: .93rem; color: var(--forest); background: #fff; border: 1px solid var(--line); border-radius: 100px; padding: 8px 14px; }
   .chip:hover { border-color: var(--leaf); }

@@ -6,12 +6,15 @@
 @import '@fontsource/jetbrains-mono/latin-500.css';
 
 :root {
-  --forest: #21492e; --leaf: #3d7350; --sage: #8aa98f; --sage-tint: #eaf0ea; --mist: #c3d2c4;
-  --gold: #b88a4e;        /* accents and large type only */
-  --gold-text: #8c6429;   /* small text: 4.8:1 on cream */
-  --gold-head: #a2773d;   /* large headings: 3.6:1 on cream */
-  --gold-soft: #d9c08a; --cream: #f7f4ed; --paper: #fcfaf5; --ink: #2b322d; --ink-soft: #5c665e;
-  --line: #e4e0d5; --water: #5b8a9e;
+  --forest: #1f4a32; --leaf: #2f6e48; --moss: #6f9b62; --sage: #9dbb98; --sage-tint: #e8f0e6; --mist: #c6d8c4;
+  --water: #3f7488; --water-tint: #e3eef1;
+  /* former gold tokens now map to the green family, so every accent belongs to one palette */
+  --gold: #6f9b62;        /* accents */
+  --gold-text: #2f6e48;   /* small accent text: 6:1 on cream */
+  --gold-head: #3f7a52;   /* italic heading accent */
+  --gold-soft: #cfe3c6;   /* light accent on dark green */
+  --cream: #f4f3ea; --paper: #fbfbf6; --ink: #22302a; --ink-soft: #55625a;
+  --line: #e0e3d6;
   --serif: 'Fraunces', Georgia, serif; --sans: 'Manrope', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
   --r: 14px; --r-lg: 22px; --shadow: 0 14px 34px -22px rgba(31, 58, 40, .35);
   --wrap: 100%;          /* full window width; text blocks keep their own reading width */
@@ -23,7 +26,7 @@ html { scroll-behavior: smooth; }
 body { font-family: var(--sans); font-size: 1.0625rem; line-height: 1.65; color: var(--ink); background: var(--paper); -webkit-font-smoothing: antialiased; }
 img, video, svg { max-width: 100%; display: block; }
 a { color: var(--leaf); }
-:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+:focus-visible { outline: 3px solid var(--water); outline-offset: 3px; border-radius: 6px; }
 .wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
 .prose { max-width: 72ch; }
 .skip { position: absolute; left: -999px; top: 8px; z-index: 100; background: var(--forest); color: #fff; padding: 8px 14px; border-radius: 8px; }
@@ -50,7 +53,7 @@ section { padding: clamp(64px, 9vw, 104px) 0; }
 .btn-ghost { border-color: var(--line); color: var(--forest); background: transparent; }
 .btn-ghost:hover { border-color: var(--leaf); background: var(--sage-tint); }
 .btn-gold { background: var(--gold-soft); color: var(--forest); }
-.btn-gold:hover { background: #e6d3a6; }
+.btn-gold:hover { background: #e2efdb; }
 .btn-small { padding: 9px 16px; font-size: .9rem; }
 
 .card { background: #fff; border: 1px solid var(--line); border-radius: var(--r); padding: 24px; }
@@ -76,9 +79,9 @@ a.card:hover { box-shadow: var(--shadow); transform: translateY(-2px); border-co
 .list { list-style: none; display: grid; gap: 8px; }
 .list li { padding-left: 22px; position: relative; }
 .list li::before { content: ''; position: absolute; left: 2px; top: .62em; width: 9px; height: 9px; border-radius: 50%; background: var(--sage); }
-.note { border-left: 3px solid var(--gold); background: #fff; padding: 14px 18px; border-radius: 0 12px 12px 0; }
+.note { border-left: 3px solid var(--leaf); background: #fff; padding: 14px 18px; border-radius: 0 12px 12px 0; }
 .muted { color: var(--ink-soft); }
 .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
 .status { display: inline-block; font: 500 .68rem var(--mono); letter-spacing: .1em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; background: var(--sage-tint); color: var(--forest); }
 .status.live { background: var(--forest); color: #fff; }
-.status.soon, .status.proto, .status.dev { background: #f1e7d3; color: #6d4f22; }
+.status.soon, .status.proto, .status.dev, .status.pilot { background: var(--water-tint); color: #2b5868; }
