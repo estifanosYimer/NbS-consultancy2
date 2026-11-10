@@ -1,0 +1,142 @@
+---
+import { getCollection } from 'astro:content';
+import tools from '../data/tools.json';
+import families from '../data/families.json';
+import { BENEFITS, LANDSCAPES, SITE } from '../data/site';
+
+const sols = (await getCollection('solutions'))
+  .filter((s) => !s.data.supporting)
+  .map((s) => ({ id: s.id, t: s.data.title, s: s.data.summary, f: s.data.family, b: s.data.benefits, l: s.data.landscapes, o: s.data.order }));
+const data = {
+  sols,
+  tools: Object.fromEntries(tools.map((t) => [t.id, { n: t.name, q: t.question }])),
+  fams: Object.fromEntries(families.map((f) => [f.id, f.name])),
+};
+const challenges = ['floods', 'drought', 'groundwater', 'quality', 'erosion', 'heat', 'biodiversity'];
+const scales = [['site', 'One site or farm'], ['municipality', 'A town or municipality'], ['catchment', 'A whole catchment or region']];
+const goals = [['where', 'Find where to act'], ['design', 'Design a measure'], ['prove', 'Prove it will work'], ['track', 'Track results'], ['unsure', 'Not sure yet']];
+---
+<div class="finder">
+  <form action="/contact/" method="get" class="qs" id="finder-form">
+    <fieldset>
+      <legend><span class="n">1</span> What is the main problem?</legend>
+      <div class="opts">
+        {challenges.map((c, i) => <label><input type="radio" name="challenge" value={c} required={i === 0} /><span>{BENEFITS[c]}</span></label>)}
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend><span class="n">2</span> What kind of landscape?</legend>
+      <div class="opts">
+        {Object.entries(LANDSCAPES).map(([k, v]) => <label><input type="radio" name="landscape" value={k} /><span>{v}</span></label>)}
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend><span class="n">3</span> How big is the area?</legend>
+      <div class="opts">
+        {scales.map(([k, v]) => <label><input type="radio" name="scale" value={k} /><span>{v}</span></label>)}
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend><span class="n">4</span> What do you need first?</legend>
+      <div class="opts">
+        {goals.map(([k, v]) => <label><input type="radio" name="goal" value={k} /><span>{v}</span></label>)}
+      </div>
+    </fieldset>
+    <noscript><button class="btn btn-primary" type="submit">Send my answers →</button></noscript>
+  </form>
+
+  <aside class="res" aria-live="polite" id="finder-result">
+    <p class="eyebrow">Your starting point</p>
+    <h3>Answer the first question to see what fits.</h3>
+    <p class="muted">You will get three measures worth looking at, the tool that tests them and the right first step. No sign-up.</p>
+  </aside>
+</div>
+<script type="application/json" id="finder-data" set:html={JSON.stringify(data)} />
+<script define:vars={{ booking: SITE.booking }}>
+  window.__nbscBooking = booking;
+</script>
+<script>
+  type Sol = { id: string; t: string; s: string; f: string; b: string[]; l: string[]; o: number };
+  const el = document.getElementById('finder-data');
+  const form = document.getElementById('finder-form') as HTMLFormElement | null;
+  const out = document.getElementById('finder-result');
+  if (el && form && out) {
+    const D = JSON.parse(el.textContent || '{}') as { sols: Sol[]; tools: Record<string, { n: string; q: string }>; fams: Record<string, string> };
+    const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c] as string);
+    const STEP: Record<string, [string, string]> = {
+      where: ['01 Site selection', 'We map where each measure fits best across your area.'],
+      design: ['02 Design', 'We size and shape the measure for your site and its future climate.'],
+      prove: ['03 Modelling', 'We model the effect with and without the measure, today and in future climates.'],
+      track: ['04 Monitoring', 'We follow the site with satellite, drone and field data.'],
+      unsure: ['A free 20-minute call', 'We listen, then tell you honestly which step to start with.'],
+    };
+    const pickTool = (ch: string, goal: string, scale: string): string[] => {
+      if (goal === 'track') return ['monitor'];
+      if (goal === 'prove') {
+        if (ch === 'groundwater' || ch === 'drought') return scale === 'catchment' ? ['groundwater', 'coupled'] : ['groundwater'];
+        if (ch === 'quality') return ['coupled', 'quality'];
+        return scale === 'catchment' ? ['catchment', 'coupled'] : ['catchment'];
+      }
+      return ['suitability'];
+    };
+    const render = () => {
+      const fd = new FormData(form);
+      const ch = String(fd.get('challenge') || ''), ls = String(fd.get('landscape') || ''), sc = String(fd.get('scale') || ''), goal = String(fd.get('goal') || 'unsure');
+      if (!ch) return;
+      const scored = D.sols
+        .map((s) => ({ s, v: (s.b.includes(ch) ? 3 + (3 - Math.min(s.b.indexOf(ch), 3)) * 0.4 : 0) + (ls && s.l.includes(ls) ? 2 : 0) - s.o * 0.05 }))
+        .filter((x) => x.v >= 3)
+        .sort((a, b) => b.v - a.v);
+      const picks: Sol[] = []; const fams = new Set<string>();
+      for (const x of scored) { if (picks.length === 3) break; if (!fams.has(x.s.f)) { picks.push(x.s); fams.add(x.s.f); } }
+      const tl = pickTool(ch, goal, sc);
+      const [stepName, stepText] = STEP[goal] || STEP.unsure;
+      const studio = goal === 'prove' && sc !== 'site'
+        ? `<p class="hint">Many people involved? A <a href="/tools/#studio">CRIDA-NbS Studio</a> workshop lets them build and stress-test plans together.</p>` : '';
+      const label = (k: string) => (document.querySelector(`input[value="${k}"] + span`)?.textContent || k);
+      out.innerHTML = `<p class="eyebrow">${esc(label(ch))}${ls ? ' · ' + esc(label(ls)) : ''}${sc ? ' · ' + esc(label(sc)) : ''}</p>
+        <h3>Look first at these ${picks.length}.</h3>
+        <ol class="picks">${picks.map((p) => `<li><a href="/solutions/${p.id}/"><b>${esc(p.t)}</b><span>${esc(p.s)}</span><em>${esc(D.fams[p.f] || '')}</em></a></li>`).join('')}</ol>
+        <div class="next">
+          <p><b>Tool that tests it:</b> ${tl.map((t) => `<a href="/tools/#${t}">${esc(D.tools[t].n)}</a>`).join(' and ')}</p>
+          <p><b>First step:</b> ${esc(stepName)}. ${esc(stepText)}</p>
+          ${studio}
+        </div>
+        <div class="acts">
+          <button class="btn btn-primary" type="submit" form="finder-form" data-track="finder-send">Send this to us →</button>
+          <a class="btn btn-ghost" href="${(window as any).__nbscBooking}" data-track="book-call">Book a 20-min call</a>
+        </div>
+        <p class="muted small">Every measure we propose is checked against the IUCN Global Standard for Nature-based Solutions.</p>`;
+    };
+    form.addEventListener('change', render);
+    render();
+  }
+</script>
+<style>
+  .finder { display: grid; grid-template-columns: 1.15fr 1fr; gap: 24px; align-items: start; }
+  .qs { display: grid; gap: 14px; }
+  fieldset { border: 1px solid var(--line); background: #fff; border-radius: var(--r); padding: 18px 20px 20px; }
+  legend { font-weight: 700; font-size: 1.02rem; padding: 0 6px; margin-left: -6px; display: flex; align-items: center; gap: 10px; }
+  .n { width: 26px; height: 26px; border-radius: 50%; background: var(--forest); color: #fff; display: inline-grid; place-items: center; font: 600 .8rem var(--mono); }
+  .opts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .opts label { cursor: pointer; }
+  .opts input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .opts span { display: inline-block; border: 1px solid var(--line); border-radius: 100px; padding: 9px 15px; font-weight: 600; font-size: .93rem; color: var(--ink); background: var(--paper); transition: background .15s, border-color .15s; }
+  .opts label:hover span { border-color: var(--sage); }
+  .opts input:checked + span { background: var(--forest); border-color: var(--forest); color: #fff; }
+  .opts input:focus-visible + span { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .res { position: sticky; top: 92px; background: #fff; border: 1px solid var(--line); border-radius: var(--r-lg); padding: 28px; box-shadow: var(--shadow); min-height: 300px; }
+  .res :global(h3) { font-size: 1.6rem; margin: 8px 0 14px; }
+  .res :global(.muted) { color: var(--ink-soft); }
+  .res :global(.small) { font-size: .88rem; margin-top: 14px; }
+  .res :global(.picks) { list-style: none; display: grid; gap: 10px; counter-reset: p; }
+  .res :global(.picks a) { display: grid; gap: 2px; padding: 14px 16px; border-radius: 12px; background: var(--cream); text-decoration: none; color: var(--ink); border: 1px solid transparent; }
+  .res :global(.picks a:hover) { border-color: var(--mist); }
+  .res :global(.picks b) { font-family: var(--serif); font-size: 1.08rem; }
+  .res :global(.picks span) { font-size: .92rem; color: var(--ink-soft); }
+  .res :global(.picks em) { font: 500 .7rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--gold-text); font-style: normal; }
+  .res :global(.next) { margin: 16px 0; padding: 14px 16px; border-left: 3px solid var(--gold); background: var(--paper); font-size: .95rem; display: grid; gap: 6px; }
+  .res :global(.acts) { display: flex; gap: 10px; flex-wrap: wrap; }
+  .res :global(.hint) { color: var(--ink-soft); }
+  @media (max-width: 900px) { .finder { grid-template-columns: 1fr; } .res { position: static; } }
+</style>

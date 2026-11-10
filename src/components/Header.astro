@@ -1,0 +1,46 @@
+---
+import Logo from './Logo.astro';
+import { SITE } from '../data/site';
+const path = Astro.url.pathname;
+const NAV = [
+  ['/solutions/', 'Solutions'], ['/services/', 'Services'], ['/tools/', 'Tools'],
+  ['/projects/', 'Projects'], ['/about/', 'About'], ['/insights/', 'Insights'],
+];
+const on = (h: string) => path.startsWith(h);
+---
+<header class="top">
+  <div class="wrap bar">
+    <a href="/" aria-label="NbS+C home" class="home"><Logo /></a>
+    <nav aria-label="Main" class="desk">
+      {NAV.map(([h, t]) => <a href={h} aria-current={on(h) ? 'page' : undefined}>{t}</a>)}
+    </nav>
+    <div class="right">
+      <a href="/contact/" class="btn btn-ghost btn-small desk">Contact</a>
+      <a href={SITE.booking} class="btn btn-primary btn-small" data-track="book-call">Book a 20-min call</a>
+      <details class="mob">
+        <summary aria-label="Menu"><span></span><span></span><span></span></summary>
+        <nav aria-label="Main mobile">
+          {NAV.map(([h, t]) => <a href={h}>{t}</a>)}
+          <a href="/contact/">Contact</a>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+<style>
+  .top { position: sticky; top: 0; z-index: 50; background: rgba(247, 244, 237, .92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .bar { display: flex; align-items: center; gap: 24px; height: 68px; }
+  .home { text-decoration: none; }
+  nav.desk { display: flex; gap: 4px; margin-left: 8px; }
+  nav a { color: var(--ink-soft); font-weight: 600; font-size: .95rem; text-decoration: none; padding: 8px 12px; border-radius: 100px; }
+  nav a:hover, nav a[aria-current] { color: var(--forest); background: var(--sage-tint); }
+  .right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .mob { display: none; position: relative; }
+  .mob summary { list-style: none; cursor: pointer; padding: 10px 6px; }
+  .mob summary::-webkit-details-marker { display: none; }
+  .mob summary span { display: block; width: 22px; height: 2px; background: var(--forest); margin: 4px 0; border-radius: 2px; }
+  .mob nav { position: absolute; right: 0; top: 52px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); padding: 10px; display: flex; flex-direction: column; min-width: 220px; box-shadow: var(--shadow); }
+  .mob nav a { padding: 12px 14px; font-size: 1.05rem; }
+  @media (max-width: 1060px) { .desk { display: none !important; } .mob { display: block; } }
+  @media (max-width: 480px) { .right .btn-primary { padding: 8px 12px; font-size: .82rem; } }
+</style>

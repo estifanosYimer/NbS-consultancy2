@@ -1,0 +1,260 @@
+---
+import Base from '../layouts/Base.astro';
+import HeroArt from '../components/HeroArt.astro';
+import Finder from '../components/Finder.astro';
+import FilmDialog from '../components/FilmDialog.astro';
+import { Image, getImage } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import families from '../data/families.json';
+import tools from '../data/tools.json';
+import { SITE } from '../data/site';
+import site from '../assets/films/site.jpg';
+import design from '../assets/films/design.jpg';
+import model from '../assets/films/model.jpg';
+import monitor from '../assets/films/monitor.jpg';
+import journey from '../assets/films/journey.jpg';
+
+const poster = await getImage({ src: journey, width: 1280, format: 'webp' });
+const all = await getCollection('solutions');
+const nbs = all.filter((s) => !s.data.supporting);
+const count = (f: string) => all.filter((s) => s.data.family === f).length;
+
+const stages = [
+  { n: '01', name: 'Site selection', line: 'Find where each measure helps most.', film: 'site', img: site },
+  { n: '02', name: 'Design', line: 'Shape it to the place and its future climate.', film: 'design', img: design },
+  { n: '03', name: 'Modelling', line: 'Prove it works before anything is built.', film: 'model', img: model },
+  { n: '04', name: 'Monitoring', line: 'Track it, learn, improve the next one.', film: 'monitor', img: monitor },
+];
+const audiences = [
+  ['municipalities', 'Municipalities', 'Fewer flooded streets, cooler neighbourhoods and evidence your council can act on.'],
+  ['water-agencies', 'Water agencies', 'Catchment-scale answers on floods, droughts and groundwater, with models you can check.'],
+  ['farmers', 'Farmers and landowners', 'Keep water and soil on your land, and show the results to subsidy schemes.'],
+  ['funders', 'Funders and investors', 'Screen projects before you fund them and verify their impact afterwards.'],
+  ['researchers', 'Researchers and students', 'Tools, data and case studies to learn and build on.'],
+];
+---
+<Base
+  title="Nature-based Solutions consultancy · Belgium and East Africa | NbS+C"
+  description="NbS+C finds where Nature-based Solutions help most, designs them, proves their effect with groundwater and catchment models, and monitors them by satellite. Following the IUCN Global Standard for NbS."
+>
+  <!-- HERO -->
+  <section class="hero cream">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Nature-based Solutions consultancy · Europe and East Africa</p>
+        <h1>Designing resilience <em>with nature.</em></h1>
+        <p class="lead">Floods, droughts, falling groundwater and polluted rivers put landscapes and cities under pressure. We help you answer with nature: the right measure, in the right place, proven before you spend and monitored long after.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#find">Find your solution →</a>
+          <a class="btn btn-ghost" href={SITE.booking} data-track="book-call">Book a 20-min call</a>
+          <button class="btn btn-ghost" type="button" data-film="journey" data-title="The NbS+C approach in 30 seconds">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>Watch 30 s
+          </button>
+        </div>
+      </div>
+      <HeroArt />
+    </div>
+  </section>
+
+  <!-- PROOF STRIP: only facts -->
+  <div class="strip">
+    <div class="wrap strip-in">
+      <span><b>IUCN Global Standard</b> for NbS in every project</span>
+      <span><b>{nbs.length} measures</b> we can place, model and monitor</span>
+      <span><b>{tools.length} in-house tools</b>, built on open data</span>
+      <span><b>Research roots</b> at Vrije Universiteit Brussel</span>
+    </div>
+  </div>
+
+  <!-- FIND YOUR SOLUTION -->
+  <section id="find">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Find your solution · under a minute</p>
+        <h2>Tell us the problem. <em>We'll point the way.</em></h2>
+        <p class="lead">Four quick questions. You see which measures fit, which of our tools tests them and where to start.</p>
+      </div>
+      <Finder />
+    </div>
+  </section>
+
+  <!-- WHO ARE YOU -->
+  <section class="cream">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Made for you</p>
+        <h2>Who are you <em>working for?</em></h2>
+      </div>
+      <div class="grid g5">
+        {audiences.map(([slug, name, line]) => (
+          <a class="card aud" href={`/for/${slug}/`}><h3>{name}</h3><p>{line}</p><span class="go">See how we help →</span></a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW WE WORK + FILMS -->
+  <section>
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">How we work</p>
+        <h2>Four stages, one loop. <em>Each in 30 seconds.</em></h2>
+        <p class="lead">Start with one stage or the whole loop. Every result we monitor sharpens the next decision.</p>
+      </div>
+      <div class="grid g4">
+        {stages.map((s) => (
+          <button class="film" type="button" data-film={s.film} data-title={`${s.n} ${s.name}`}>
+            <span class="thumb">
+              <Image src={s.img} alt="" widths={[360, 640]} sizes="(max-width: 620px) 100vw, (max-width: 1000px) 50vw, 280px" loading="lazy" />
+              <span class="play" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M7 4v16l13-8z"/></svg></span>
+              <span class="dur">0:30</span>
+            </span>
+            <span class="fb"><span class="eyebrow">{s.n}</span><b>{s.name}</b><span>{s.line}</span></span>
+          </button>
+        ))}
+      </div>
+      <p class="more"><a href="/services/">See what you get at each stage →</a></p>
+    </div>
+  </section>
+
+  <!-- IUCN STANDARD -->
+  <section class="cream">
+    <div class="wrap iucn">
+      <div>
+        <p class="eyebrow">Our quality standard</p>
+        <h2>We follow the IUCN Global Standard for <em>Nature-based Solutions.</em></h2>
+        <p class="lead">Every measure we site, design, model and monitor is checked against the IUCN Global Standard for Nature-based Solutions (Second Edition, 2025). It makes sure a green project is a genuine Nature-based Solution: good for people, good for nature, built to last.</p>
+        <div class="sep"><b>Separate from CRIDA.</b> The IUCN Standard is our own commitment in every project. It is not part of the CRIDA process, a climate-risk decision method we use only when a decision must hold up under an uncertain climate. <a href="/services/#standards">How the two fit together →</a></div>
+      </div>
+      <ol class="crit">
+        <li>Solves a real problem for people</li>
+        <li>Planned at the right scale</li>
+        <li>Brings gains for biodiversity</li>
+        <li>Economically viable for the long term</li>
+        <li>Fair and inclusive decisions</li>
+        <li>Trade-offs made openly</li>
+        <li>Managed and adapted over time</li>
+        <li>Built to last and to scale up</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- SOLUTION FAMILIES -->
+  <section>
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">The toolbox · {nbs.length} measures</p>
+        <h2>Every kind of nature <em>that works for water.</em></h2>
+        <p class="lead">From beaver dams to green roofs, from peat rewetting to stone bunds on Ethiopian hillsides.</p>
+      </div>
+      <div class="grid g3">
+        {families.filter((f) => !f.support).map((f) => (
+          <a class="card fam" href={`/solutions/#${f.id}`}>
+            <span class="cnt">{count(f.id)} measures</span>
+            <h3>{f.name}</h3><p>{f.intro}</p>
+          </a>
+        ))}
+      </div>
+      <p class="more"><a class="btn btn-primary" href="/solutions/">Explore all {nbs.length} solutions →</a></p>
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section class="cream">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Our tools</p>
+        <h2>Built in-house, <em>proven in research.</em></h2>
+        <p class="lead">Each tool answers one plain question. Under the hood: open data, coupled surface and groundwater models, remote sensing.</p>
+      </div>
+      <div class="grid g4">
+        {tools.map((t) => (
+          <a class="card tool" href={`/tools/#${t.id}`}><span class="q">{t.question}</span><h3>{t.name}</h3></a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- PROOF -->
+  <section>
+    <div class="wrap proof">
+      <div>
+        <p class="eyebrow">Where the loop is turning</p>
+        <h2>From a student field <em>to whole catchments.</em></h2>
+        <p class="lead">In Melle (Belgium), students use our Suitability Explorer to co-design Nature-based Solutions for an experimental field. More project stories follow as our partners approve them.</p>
+        <div class="cta"><a class="btn btn-ghost" href="/projects/">See projects →</a></div>
+      </div>
+      <figure class="film big">
+        <video controls playsinline preload="none" poster={poster.src} aria-label="The NbS+C approach in 30 seconds">
+          <source src="/media/journey.mp4" type="video/mp4" />
+        </video>
+        <figcaption>The whole approach in 30 seconds.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cream">
+    <div class="wrap">
+      <div class="band">
+        <p class="eyebrow light">Let's talk</p>
+        <h2>Bring a question. <em>Leave with a plan.</em></h2>
+        <p>In twenty minutes we tell you which stage to start with, which tool fits and what you would get back. The first conversation is free.</p>
+        <div class="cta center">
+          <a class="btn btn-gold" href={SITE.booking} data-track="book-call">Book a 20-min call</a>
+          <a class="btn ghost-light" href="/contact/">Write to us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FilmDialog />
+</Base>
+
+<style>
+  .hero { padding: clamp(56px, 8vw, 96px) 0; }
+  .hero-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 56px; align-items: center; }
+  .hero h1 { margin: 16px 0 18px; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+  .cta.center { justify-content: center; }
+  .strip { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--paper); }
+  .strip-in { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding-top: 18px; padding-bottom: 18px; font-size: .95rem; color: var(--ink-soft); }
+  .strip b { color: var(--forest); }
+  .aud h3 { font-size: 1.15rem; margin-bottom: 8px; }
+  .aud p { font-size: .94rem; color: var(--ink-soft); }
+  .go { display: block; margin-top: 12px; font-weight: 700; font-size: .9rem; color: var(--leaf); }
+  .film { background: #fff; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; padding: 0; text-align: left; font: inherit; color: inherit; cursor: pointer; transition: box-shadow .2s, transform .2s; }
+  .film:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+  .thumb { position: relative; display: block; aspect-ratio: 16 / 9; background: var(--sage-tint); }
+  .thumb :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .play { position: absolute; left: 12px; bottom: 12px; width: 40px; height: 40px; border-radius: 50%; background: var(--forest); display: grid; place-items: center; }
+  .dur { position: absolute; right: 10px; bottom: 12px; font: 500 .72rem var(--mono); background: rgba(252, 250, 245, .94); padding: 3px 8px; border-radius: 100px; color: var(--ink); }
+  .fb { display: grid; gap: 2px; padding: 14px 18px 18px; }
+  .fb b { font-family: var(--serif); font-size: 1.15rem; }
+  .fb > span:last-child { font-size: .92rem; color: var(--ink-soft); }
+  .more { margin-top: 28px; }
+  .more a:not(.btn) { font-weight: 700; }
+  .iucn { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
+  .iucn h2 { margin: 12px 0 14px; }
+  .sep { margin-top: 20px; border-left: 3px solid var(--gold); background: #fff; padding: 14px 18px; border-radius: 0 12px 12px 0; }
+  .crit { list-style: none; counter-reset: c; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .crit li { counter-increment: c; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px 14px 46px; position: relative; font-weight: 600; font-size: .95rem; }
+  .crit li::before { content: counter(c); position: absolute; left: 16px; top: 12px; font: 600 1.1rem var(--serif); color: var(--gold-text); }
+  .fam .cnt, .tool .q { font: 500 .72rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--gold-text); }
+  .fam h3 { margin: 8px 0 6px; } .fam p { font-size: .94rem; color: var(--ink-soft); }
+  .tool h3 { margin-top: 8px; }
+  .proof { display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px; align-items: center; }
+  .proof h2 { margin: 12px 0 14px; }
+  .big { cursor: default; padding: 0; }
+  .big:hover { transform: none; }
+  .big video { width: 100%; display: block; background: #000; }
+  .big figcaption { padding: 12px 16px; font-size: .92rem; color: var(--ink-soft); }
+  .band { background: var(--forest); color: #e7efe9; border-radius: var(--r-lg); padding: clamp(36px, 6vw, 64px); text-align: center; }
+  .band h2 { color: #fff; margin: 10px 0 12px; } .band h2 em { color: var(--gold-soft); }
+  .band p { max-width: 60ch; margin: 0 auto; }
+  .light { color: var(--gold-soft); }
+  .ghost-light { border-color: rgba(255, 255, 255, .4); color: #fff; }
+  .ghost-light:hover { background: rgba(255, 255, 255, .1); }
+  @media (max-width: 1000px) { .hero-grid, .iucn, .proof { grid-template-columns: 1fr; } .strip-in { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .crit { grid-template-columns: 1fr; } .strip-in { grid-template-columns: 1fr; } }
+</style>

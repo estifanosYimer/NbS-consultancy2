@@ -1,0 +1,40 @@
+---
+import Logo from './Logo.astro';
+import { SITE } from '../data/site';
+const year = new Date().getFullYear();
+---
+<footer class="foot">
+  <div class="wrap cols">
+    <div>
+      <Logo light />
+      <p>Nature-based Solutions for hydroclimatic resilience, water quality and biodiversity. We follow the IUCN Global Standard for Nature-based Solutions in every project.</p>
+    </div>
+    <div>
+      <h2>Explore</h2>
+      <a href="/solutions/">Solutions</a><a href="/services/">Services</a><a href="/tools/">Tools</a><a href="/projects/">Projects</a><a href="/about/">About</a><a href="/insights/">Insights</a>
+    </div>
+    <div>
+      <h2>For you</h2>
+      <a href="/for/municipalities/">Municipalities</a><a href="/for/water-agencies/">Water agencies</a><a href="/for/farmers/">Farmers and landowners</a><a href="/for/funders/">Funders and investors</a><a href="/for/researchers/">Researchers and students</a>
+    </div>
+    <div>
+      <h2>Contact</h2>
+      <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      <a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a>
+      <span>{SITE.address[0]}<br />{SITE.address[1]}</span>
+    </div>
+  </div>
+  <div class="wrap bot"><span>© {year} {SITE.name}</span><span><a href="/privacy/">Privacy</a> · {SITE.tagline}</span></div>
+</footer>
+<style>
+  .foot { background: var(--forest); color: #cfe0d3; padding: 64px 0 28px; margin-top: 0; }
+  .cols { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.3fr; gap: 32px; }
+  .cols p { margin-top: 14px; font-size: .95rem; max-width: 36ch; }
+  h2 { font: 500 .75rem var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--gold-soft); margin-bottom: 12px; }
+  .cols a, .cols span { display: block; color: #e7efe9; text-decoration: none; font-size: .95rem; padding: 3px 0; }
+  .cols a:hover { color: #fff; text-decoration: underline; }
+  .bot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid rgba(255,255,255,.15); margin-top: 40px; padding-top: 20px; font-size: .88rem; }
+  .bot a { color: #e7efe9; }
+  @media (max-width: 900px) { .cols { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .cols { grid-template-columns: 1fr; } }
+</style>

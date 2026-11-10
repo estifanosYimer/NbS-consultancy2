@@ -1,0 +1,22 @@
+---
+// Stage 1 preview: placeholders for pages that are rebuilt in stages 2 and 3.
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { SITE } from '../data/site';
+export async function getStaticPaths() {
+  const sols = await getCollection('solutions');
+  const base = ['solutions', 'services', 'tools', 'projects', 'about', 'insights', 'contact', 'privacy',
+    'for/municipalities', 'for/water-agencies', 'for/farmers', 'for/funders', 'for/researchers'];
+  return [...base, ...sols.map((s) => `solutions/${s.id}`)].map((p) => ({ params: { stub: p } }));
+}
+const { stub } = Astro.params;
+const name = (stub ?? '').split('/').pop()?.replace(/-/g, ' ') ?? '';
+---
+<Base title={`${name} · NbS+C (preview)`} description="This page is being rebuilt." noindex>
+  <section class="cream"><div class="wrap">
+    <p class="eyebrow">Stage 1 preview</p>
+    <h1 style="text-transform:capitalize;margin:12px 0 16px;">{name}</h1>
+    <p class="lead">This page is rebuilt in the next stage. For now, please write to <a href={`mailto:${SITE.email}`}>{SITE.email}</a> or call {SITE.phone}.</p>
+    <p style="margin-top:20px"><a class="btn btn-primary" href="/">Back to the new home page</a></p>
+  </div></section>
+</Base>

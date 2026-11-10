@@ -1,0 +1,58 @@
+[
+ {
+  "id": "suitability",
+  "name": "NbS Suitability Explorer",
+  "question": "Where should each solution go?",
+  "plain": "Draw or upload your study area, tell the tool what matters most, and get a map for each Nature-based Solution showing where it fits best, with benefits, costs and priority sites.",
+  "audience": "Planners · municipalities · students"
+ },
+ {
+  "id": "catchment",
+  "name": "Catchment geohydrological model",
+  "question": "What happens to floods, recharge and evaporation?",
+  "plain": "A digital twin of your catchment that follows rain from the sky to the river and into the ground, so you can test Nature-based Solutions over years and under future climates.",
+  "audience": "Water agencies · engineers"
+ },
+ {
+  "id": "groundwater",
+  "name": "NbS+C Groundwater Model",
+  "question": "How will groundwater respond?",
+  "plain": "Builds a working groundwater model for your area automatically, so you can see how the water table responds to recharge, wells and Nature-based Solutions.",
+  "audience": "Hydrogeologists · utilities"
+ },
+ {
+  "id": "coupled",
+  "name": "SWAT+ with MODFLOW or gwflow",
+  "question": "With or without the measure?",
+  "plain": "Surface water and groundwater solved together, so the hidden benefits of Nature-based Solutions, like recharge and summer river flow, show up in the numbers.",
+  "audience": "Researchers · river basin managers"
+ },
+ {
+  "id": "monitor",
+  "name": "nbsmonitor",
+  "question": "Is it working, year after year?",
+  "plain": "Follows your Nature-based Solution from space, season after season: is the vegetation growing, is the water there, is the site recovering?",
+  "audience": "Site managers · funders"
+ },
+ {
+  "id": "studio",
+  "name": "CRIDA-NbS Studio",
+  "question": "Which plan holds up in a changing climate?",
+  "plain": "A workshop tool where stakeholders build their own plan on a real, calibrated catchment model, see the outcomes, test them against future climate and compare them with an automatic optimiser.",
+  "audience": "Stakeholder workshops · policy"
+ },
+ {
+  "id": "quality",
+  "name": "Water quality & PFAS module",
+  "question": "Can nature reduce pollution?",
+  "plain": "Extends the catchment model to pollution, so you can see how much Nature-based Solutions reduce nutrients, PFAS and other substances in rivers and groundwater.",
+  "audience": "Regulators · utilities"
+ },
+ {
+  "id": "game",
+  "name": "Sponge Valley",
+  "question": "Can a game teach it?",
+  "plain": "A browser game where children and adults build a valley that can soak up floods and survive droughts, and discover why nature is such a good engineer.",
+  "audience": "Schools · public events"
+ }
+]

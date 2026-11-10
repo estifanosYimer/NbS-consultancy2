@@ -1,0 +1,82 @@
+[
+ {
+  "id": "wetlands",
+  "name": "Wetlands & peat",
+  "intro": "Wet landscapes that hold back floodwater, clean it, refill groundwater and lock up carbon.",
+  "film": "wetland",
+  "order": 0,
+  "support": false
+ },
+ {
+  "id": "rivers",
+  "name": "Rivers & floodplains",
+  "intro": "Give rivers room and natural shape, so floods spread safely and summer flows stay up.",
+  "film": "flood",
+  "order": 1,
+  "support": false
+ },
+ {
+  "id": "buffers",
+  "name": "Riparian zones & buffers",
+  "intro": "Living strips along water and field edges that trap soil and nutrients and shade the water.",
+  "film": "buffer",
+  "order": 2,
+  "support": false
+ },
+ {
+  "id": "forests",
+  "name": "Forests & land cover",
+  "intro": "The right vegetation in the right place: cooler land, steadier soils and a better water balance.",
+  "film": "forest",
+  "order": 3,
+  "support": false
+ },
+ {
+  "id": "ponds",
+  "name": "Ponds & small storage",
+  "intro": "Small water bodies that catch storm water and keep a reserve for dry spells.",
+  "film": null,
+  "order": 4,
+  "support": false
+ },
+ {
+  "id": "recharge",
+  "name": "Groundwater & aquifer recharge",
+  "intro": "Put water back underground when it is plentiful, so it is there when it is scarce.",
+  "film": "aquifer",
+  "order": 5,
+  "support": false
+ },
+ {
+  "id": "drainage",
+  "name": "Drainage & water-level management",
+  "intro": "Keep water in the landscape longer by managing drains and ditches more wisely.",
+  "film": null,
+  "order": 6,
+  "support": false
+ },
+ {
+  "id": "farm",
+  "name": "Farm & soil measures",
+  "intro": "Keep rain and soil where they fall, from Flemish fields to Ethiopian highlands.",
+  "film": null,
+  "order": 7,
+  "support": false
+ },
+ {
+  "id": "urban",
+  "name": "Urban green & blue",
+  "intro": "Cooler, spongier cities that store rain where it falls.",
+  "film": null,
+  "order": 8,
+  "support": false
+ },
+ {
+  "id": "support",
+  "name": "Supporting measures",
+  "intro": "Not Nature-based Solutions in themselves, but often needed alongside them to close the water balance. We model them so the picture is complete.",
+  "film": null,
+  "order": 9,
+  "support": true
+ }
+]

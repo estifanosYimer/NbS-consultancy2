@@ -1,0 +1,50 @@
+---
+---
+<div class="art">
+  <svg class="calm" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A calm landscape with a wetland, reeds and a tree">
+    <rect width="400" height="300" fill="#EAF0EA"/>
+    <g class="glow"><circle cx="320" cy="70" r="34" fill="#D9C08A"/><circle cx="320" cy="70" r="20" fill="#B88A4E"/></g>
+    <g class="drift" fill="#fff" opacity=".75"><ellipse cx="110" cy="62" rx="34" ry="9"/><ellipse cx="132" cy="54" rx="20" ry="9"/><ellipse cx="230" cy="96" rx="26" ry="6"/></g>
+    <path d="M0 190 Q120 150 210 185 T400 175 V300 H0Z" fill="#8AA98F"/>
+    <path d="M0 220 Q140 195 250 225 T400 215 V300 H0Z" fill="#3D7350"/>
+    <path d="M120 235 q100 -30 260 4 q -40 40 -130 40 q -90 0 -130 -44Z" fill="#5B8A9E"/>
+    <g stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none" opacity=".55">
+      <path class="shimmer" d="M170 246 h120"/><path class="shimmer d2" d="M200 260 h110"/><path class="shimmer d3" d="M235 272 h70"/>
+    </g>
+    <g stroke="#21492E" stroke-width="3" stroke-linecap="round" fill="none">
+      <g class="sway"><path d="M60 235 q-4 -30 4 -50M70 235 q6 -28 0 -48M50 235 q-8 -24 -2 -42"/></g>
+      <g class="sway s2"><path d="M350 235 q4 -30 -4 -50M340 235 q-6 -28 0 -48"/></g>
+    </g>
+    <g fill="#21492E"><ellipse cx="200" cy="150" rx="26" ry="20"/><rect x="196" y="150" width="8" height="34" rx="4" fill="#5a3d28"/><ellipse cx="180" cy="158" rx="18" ry="14"/><ellipse cx="220" cy="158" rx="18" ry="14"/></g>
+  </svg>
+  <button type="button" class="pause" hidden aria-pressed="false">Pause motion</button>
+</div>
+<script>
+  for (const art of document.querySelectorAll<HTMLElement>('.art')) {
+    const btn = art.querySelector<HTMLButtonElement>('.pause');
+    const svg = art.querySelector('svg');
+    if (!btn || !svg || matchMedia('(prefers-reduced-motion: reduce)').matches) continue;
+    btn.hidden = false;
+    btn.addEventListener('click', () => {
+      const p = svg.classList.toggle('paused');
+      btn.textContent = p ? 'Play motion' : 'Pause motion';
+      btn.setAttribute('aria-pressed', String(p));
+    });
+  }
+</script>
+<style>
+  .art { position: relative; aspect-ratio: 4 / 3; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow); }
+  .art svg { width: 100%; height: 100%; }
+  .drift { animation: drift 60s linear infinite alternate; }
+  .shimmer { stroke-dasharray: 18 22; animation: shimmer 14s linear infinite; }
+  .d2 { animation-delay: -5s; } .d3 { animation-delay: -9s; }
+  .sway { transform-box: fill-box; transform-origin: 50% 100%; animation: sway 9s ease-in-out infinite alternate; }
+  .s2 { animation-duration: 11s; animation-delay: -3s; }
+  .glow { transform-box: fill-box; transform-origin: center; animation: glow 12s ease-in-out infinite alternate; }
+  .paused * { animation-play-state: paused !important; }
+  @keyframes drift { from { transform: translateX(-14px); } to { transform: translateX(14px); } }
+  @keyframes shimmer { to { stroke-dashoffset: -200; } }
+  @keyframes sway { from { transform: rotate(-2deg); } to { transform: rotate(2deg); } }
+  @keyframes glow { from { transform: scale(1); } to { transform: scale(1.05); } }
+  .pause { position: absolute; right: 12px; bottom: 12px; border: 0; border-radius: 100px; background: rgba(252, 250, 245, .94); color: var(--forest); font: 700 .8rem var(--sans); padding: 7px 13px; cursor: pointer; }
+</style>

@@ -1,0 +1,34 @@
+---
+// One shared player. Any element with data-film="name" (and optional data-title) opens it.
+---
+<dialog class="film" aria-label="Video">
+  <form method="dialog"><button class="x" aria-label="Close video">×</button></form>
+  <video controls playsinline preload="none"></video>
+  <p class="cap"></p>
+</dialog>
+<script>
+  const dlg = document.querySelector<HTMLDialogElement>('dialog.film');
+  const v = dlg?.querySelector('video');
+  const cap = dlg?.querySelector('.cap');
+  if (dlg && v && cap) {
+    document.addEventListener('click', (e) => {
+      const t = (e.target as HTMLElement).closest<HTMLElement>('[data-film]');
+      if (!t) return;
+      e.preventDefault();
+      const k = t.dataset.film;
+      v.src = `/media/${k}.mp4`;
+      cap.textContent = t.dataset.title || '';
+      dlg.showModal();
+      v.play().catch(() => {});
+    });
+    dlg.addEventListener('close', () => v.pause());
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+  }
+</script>
+<style>
+  .film { border: 0; padding: 0; background: transparent; width: min(1100px, 94vw); margin: auto; overflow: visible; }
+  .film::backdrop { background: rgba(20, 26, 22, .86); }
+  .film video { width: 100%; border-radius: 16px; background: #000; }
+  .x { position: absolute; top: -46px; right: 0; background: none; border: 0; color: #fff; font-size: 2rem; cursor: pointer; line-height: 1; }
+  .cap { color: #e7eee8; margin-top: 12px; }
+</style>
