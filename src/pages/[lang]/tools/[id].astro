@@ -1,0 +1,11 @@
+---
+import View from '../../../views/Tool.astro';
+import tools from '../../../data/tools-full.json';
+import type { Lang } from '../../../i18n/ui';
+export async function getStaticPaths() {
+  const ids = tools.map((t) => t.id);
+  return ['nl', 'fr'].flatMap((lang) => ids.map((id) => ({ params: { lang, id } })));
+}
+const { lang, id } = Astro.params;
+---
+<View lang={lang as Lang} id={id!} />

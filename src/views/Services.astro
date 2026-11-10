@@ -1,0 +1,121 @@
+---
+import Base from '../layouts/Base.astro';
+import FilmCard from '../components/FilmCard.astro';
+import { bookHref } from '../data/site';
+import { toolsFor } from '../i18n/data';
+import { lp, t, type Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const T = t(lang); const V = T.svc;
+const L = (p: string) => lp(lang, p);
+const tools = Object.fromEntries(toolsFor(lang).map((x) => [x.id, x]));
+const ids = ['site-selection', 'design', 'modelling', 'monitoring'];
+---
+<Base title={V.title} description={V.desc} lang={lang}>
+  <section class="phead cream">
+    <div class="wrap">
+      <p class="eyebrow">{V.eyebrow}</p>
+      <h1>{V.h1}</h1>
+      <p class="lead">{V.lead}</p>
+      <nav class="jump" aria-label={T.nav.services}>
+        {T.stages.map((s, i) => <a href={`#${ids[i]}`}>{s.n} {s.name}</a>)}
+        <a href="#standards">IUCN · CRIDA</a>
+        <a href="#specialist">{V.specEyebrow}</a>
+      </nav>
+    </div>
+  </section>
+
+  {V.stages.map((s, i) => (
+    <section id={ids[i]} class:list={[{ cream: i % 2 === 1 }, 'stage']}>
+      <div class="wrap row">
+        <div>
+          <p class="eyebrow">{T.stages[i].n} · {T.stages[i].name}</p>
+          <h2>{s.name}</h2>
+          <p class="lead">{s.text}</p>
+          <div class="cols2">
+            <div><h3 class="h">{V.getLabel}</h3><ul class="list">{s.get.map((g) => <li>{g}</li>)}</ul></div>
+            <div><h3 class="h">{V.tools}</h3><ul class="list">{s.tools.map((k) => <li><a href={L(`/tools/${k}/`)}>{tools[k].n}</a></li>)}</ul></div>
+          </div>
+        </div>
+        <FilmCard film={T.stages[i].film} title={`${T.stages[i].n} ${T.stages[i].name}`} line={T.stages[i].line} />
+      </div>
+    </section>
+  ))}
+
+  <section id="standards" class="std">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">{V.stdEyebrow}</p>
+        <h2>{V.stdH2a} <em>{V.stdH2b}</em></h2>
+        <p class="lead">{V.stdLead}</p>
+      </div>
+      <div class="grid g2 frames">
+        <div class="card fr iucn">
+          <span class="ftag">{V.iucnTag}</span>
+          <h3>{V.iucnH3}</h3>
+          <p>{V.iucnP}</p>
+          <ol class="crit">{V.iucnList.map((c) => <li>{c}</li>)}</ol>
+        </div>
+        <div class="card fr crida">
+          <span class="ftag alt">{V.cridaTag}</span>
+          <h3>{V.cridaH3}</h3>
+          <p>{V.cridaP}</p>
+          <ul class="list">{V.cridaList.map((c) => <li>{c}</li>)}</ul>
+          <p class="note" set:html={V.cridaNote} />
+          <p><a href={L('/tools/studio/')}>CRIDA-NbS Studio →</a></p>
+        </div>
+      </div>
+      <h3 class="th">{V.tableH}</h3>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th scope="col">{V.tableStage}</th><th scope="col">{V.tableCheck}</th></tr></thead>
+          <tbody>{V.table.map((r, i) => <tr><th scope="row">{T.stages[i].n} {T.stages[i].name}</th><td>{r}</td></tr>)}</tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="specialist" class="cream">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">{V.specEyebrow}</p>
+        <h2>{V.specH2a} <em>{V.specH2b}</em></h2>
+      </div>
+      <div class="grid g3 wide">
+        {V.spec.map(([h, p]) => <div class="card"><h3>{h}</h3><p class="muted sp">{p}</p></div>)}
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href={bookHref(lang)} data-track="book-call">{T.btn.book}</a>
+        <a class="btn btn-ghost" href={L('/contact/')}>{T.btn.write}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+  .jump a { font-weight: 600; font-size: .9rem; text-decoration: none; color: var(--forest); background: #fff; border: 1px solid var(--line); border-radius: 100px; padding: 7px 14px; }
+  .row { display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(32px, 5vw, 80px); align-items: center; }
+  .row h2 { margin: 12px 0 14px; }
+  .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 26px; }
+  .h { font: 500 .78rem var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--gold-text); margin-bottom: 10px; }
+  .frames { align-items: stretch; }
+  .fr { padding: clamp(24px, 3vw, 36px); display: grid; gap: 14px; align-content: start; }
+  .fr h3 { font-size: 1.45rem; }
+  .iucn { border-top: 4px solid var(--forest); }
+  .crida { border-top: 4px solid var(--water); }
+  .ftag { justify-self: start; font: 500 .7rem var(--mono); letter-spacing: .12em; text-transform: uppercase; background: var(--forest); color: #fff; padding: 4px 10px; border-radius: 100px; }
+  .ftag.alt { background: #e3edf1; color: #2e5a6b; }
+  .crit { counter-reset: c; list-style: none; display: grid; gap: 8px; }
+  .crit li { counter-increment: c; position: relative; padding-left: 34px; }
+  .crit li::before { content: counter(c); position: absolute; left: 0; top: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--sage-tint); color: var(--forest); font: 600 .78rem var(--mono); display: grid; place-items: center; }
+  .th { font-size: 1.3rem; margin: 48px 0 14px; }
+  .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); background: #fff; }
+  table { border-collapse: collapse; width: 100%; min-width: 560px; }
+  th, td { text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { font: 500 .74rem var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--gold-text); background: var(--cream); }
+  tbody th { font-family: var(--serif); white-space: nowrap; }
+  tr:last-child th, tr:last-child td { border-bottom: 0; }
+  .sp { margin-top: 8px; font-size: .95rem; }
+  @media (max-width: 900px) { .row { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .cols2 { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,9 @@
+---
+import View from '../../views/Post.astro';
+import posts from '../../data/posts.json';
+export async function getStaticPaths() {
+  return posts.map((p) => p.slug).map((slug) => ({ params: { slug } }));
+}
+const { slug } = Astro.params;
+---
+<View lang="en" slug={slug!} />

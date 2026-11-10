@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import posts from '../data/posts.json';
+import { bookHref } from '../data/site';
+import { lp, t, type Lang } from '../i18n/ui';
+interface Props { lang: Lang; slug: string }
+const { lang, slug } = Astro.props;
+const T = t(lang); const I = T.ins;
+const p = posts.find((x) => x.slug === slug)!;
+const body = p.body.replace(/href="\/contact\/"/g, `href="${lp(lang, '/contact/')}"`);
+const others = posts.filter((x) => x.slug !== slug).slice(0, 3);
+---
+<Base title={`${p.title} · NbS+C`} description={p.description} lang={lang}>
+  <article>
+    <section class="phead cream"><div class="wrap">
+      <p class="crumbs"><a href={lp(lang, '/insights/')}>{T.nav.insights}</a></p>
+      <p class="eyebrow">{p.meta}</p>
+      <h1 lang="en">{p.title}</h1>
+      <p class="lead" lang="en">{p.dek}</p>
+      {lang !== 'en' && <p style="margin-top:14px"><span class="tag">{I.en}</span></p>}
+    </div></section>
+    <section><div class="wrap">
+      <div class="prose body" lang="en" set:html={body} />
+      <div class="cta-row"><a class="btn btn-primary" href={bookHref(lang)} data-track="book-call">{T.btn.book}</a><a class="btn btn-ghost" href={lp(lang, '/insights/')}>{I.back}</a></div>
+    </div></section>
+  </article>
+  <section class="cream"><div class="wrap">
+    <div class="grid g3">{others.map((o) => <a class="card" href={lp(lang, `/insights/${o.slug}/`)}><span class="eyebrow">{o.meta}</span><h3 lang="en" style="margin-top:8px">{o.title}</h3></a>)}</div>
+  </div></section>
+</Base>
+<style>
+  .body { font-size: 1.1rem; }
+  .body :global(p) { margin-bottom: 1.1em; }
+  .body :global(h2) { font-size: 1.6rem; margin: 1.6em 0 .6em; }
+  .body :global(h3) { margin: 1.4em 0 .5em; }
+  .body :global(ul), .body :global(ol) { margin: 0 0 1.1em 1.3em; }
+  .body :global(li) { margin-bottom: .4em; }
+  .body :global(blockquote) { border-left: 3px solid var(--gold); padding: 6px 18px; margin: 1.4em 0; font-family: var(--serif); font-size: 1.25rem; color: var(--forest); }
+</style>

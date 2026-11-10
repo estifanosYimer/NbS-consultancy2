@@ -1,0 +1,9 @@
+---
+import View from '../../views/Privacy.astro';
+import type { Lang } from '../../i18n/ui';
+export async function getStaticPaths() {
+  return [{ params: { lang: 'nl' } }, { params: { lang: 'fr' } }];
+}
+const { lang } = Astro.params;
+---
+<View lang={lang as Lang} />

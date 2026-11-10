@@ -1,0 +1,11 @@
+---
+import View from '../../../views/Solution.astro';
+import { getCollection } from 'astro:content';
+import type { Lang } from '../../../i18n/ui';
+export async function getStaticPaths() {
+  const ids = (await getCollection('solutions')).map((s) => s.id);
+  return ['nl', 'fr'].flatMap((lang) => ids.map((id) => ({ params: { lang, id } })));
+}
+const { lang, id } = Astro.params;
+---
+<View lang={lang as Lang} id={id!} />

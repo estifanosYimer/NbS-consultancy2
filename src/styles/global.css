@@ -14,7 +14,8 @@
   --line: #e4e0d5; --water: #5b8a9e;
   --serif: 'Fraunces', Georgia, serif; --sans: 'Manrope', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
   --r: 14px; --r-lg: 22px; --shadow: 0 14px 34px -22px rgba(31, 58, 40, .35);
-  --wrap: 1200px;
+  --wrap: 100%;          /* full window width; text blocks keep their own reading width */
+  --gutter: clamp(20px, 4.5vw, 88px);
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -23,7 +24,8 @@ body { font-family: var(--sans); font-size: 1.0625rem; line-height: 1.65; color:
 img, video, svg { max-width: 100%; display: block; }
 a { color: var(--leaf); }
 :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
-.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px); }
+.wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+.prose { max-width: 72ch; }
 .skip { position: absolute; left: -999px; top: 8px; z-index: 100; background: var(--forest); color: #fff; padding: 8px 14px; border-radius: 8px; }
 .skip:focus { left: 8px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -38,7 +40,7 @@ section[id], [id].anchor { scroll-margin-top: 84px; }
 .lead { font-size: 1.15rem; color: var(--ink-soft); max-width: 66ch; }
 section { padding: clamp(64px, 9vw, 104px) 0; }
 .cream { background: var(--cream); }
-.head { max-width: 760px; margin-bottom: 40px; }
+.head { max-width: 860px; margin-bottom: 40px; }
 .head h2 { margin: 12px 0 14px; }
 
 .btn { display: inline-flex; align-items: center; gap: 8px; font: 700 .98rem var(--sans); padding: 13px 24px; border-radius: 100px; border: 1.5px solid transparent; text-decoration: none; cursor: pointer; transition: background .2s, transform .2s; white-space: nowrap; }
@@ -56,6 +58,7 @@ a.card { display: block; color: inherit; text-decoration: none; transition: box-
 a.card:hover { box-shadow: var(--shadow); transform: translateY(-2px); border-color: var(--mist); }
 .grid { display: grid; gap: 16px; }
 .g2 { grid-template-columns: repeat(2, 1fr); } .g3 { grid-template-columns: repeat(3, 1fr); } .g4 { grid-template-columns: repeat(4, 1fr); } .g5 { grid-template-columns: repeat(5, 1fr); }
+@media (min-width: 1700px) { .g4.wide { grid-template-columns: repeat(5, 1fr); } .g3.wide { grid-template-columns: repeat(4, 1fr); } }
 @media (max-width: 1000px) { .g4, .g5 { grid-template-columns: repeat(2, 1fr); } .g3 { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 620px) { .g2, .g3, .g4, .g5 { grid-template-columns: 1fr; } }
 .tag { display: inline-block; font: 600 .74rem var(--sans); padding: 3px 10px; border-radius: 100px; background: var(--sage-tint); color: var(--forest); }
@@ -64,3 +67,18 @@ a.card:hover { box-shadow: var(--shadow); transform: translateY(-2px); border-co
 /* Smooth, subtle page-to-page transitions (browser-native, no JavaScript) */
 @view-transition { navigation: auto; }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .25s; }
+
+/* Page header used on inner pages */
+.phead { padding: clamp(56px, 8vw, 96px) 0 clamp(40px, 6vw, 64px); }
+.phead h1 { margin: 14px 0 16px; max-width: 22ch; }
+.crumbs { font-size: .9rem; margin-bottom: 8px; }
+.crumbs a { color: var(--ink-soft); text-decoration: none; } .crumbs a:hover { color: var(--forest); text-decoration: underline; }
+.list { list-style: none; display: grid; gap: 8px; }
+.list li { padding-left: 22px; position: relative; }
+.list li::before { content: ''; position: absolute; left: 2px; top: .62em; width: 9px; height: 9px; border-radius: 50%; background: var(--sage); }
+.note { border-left: 3px solid var(--gold); background: #fff; padding: 14px 18px; border-radius: 0 12px 12px 0; }
+.muted { color: var(--ink-soft); }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.status { display: inline-block; font: 500 .68rem var(--mono); letter-spacing: .1em; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; background: var(--sage-tint); color: var(--forest); }
+.status.live { background: var(--forest); color: #fff; }
+.status.soon, .status.proto, .status.dev { background: #f1e7d3; color: #6d4f22; }

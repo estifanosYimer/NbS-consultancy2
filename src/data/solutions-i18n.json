@@ -1,0 +1,512 @@
+{
+ "wetland-restoration": {
+  "nl": {
+   "t": "Herstel van wetlands",
+   "s": "Breng natte grond terug waar water van nature samenkomt: drains eruit, sloten hoger."
+  },
+  "fr": {
+   "t": "Restauration de zones humides",
+   "s": "Rendre humides les terres où l’eau se rassemble naturellement : drains retirés, fossés relevés."
+  }
+ },
+ "floodplain-wetlands": {
+  "nl": {
+   "t": "Wetlands in de overstromingsvlakte",
+   "s": "Wetlands op de valleibodem die vollopen als de rivier hoog staat."
+  },
+  "fr": {
+   "t": "Zones humides de plaine inondable",
+   "s": "Des zones humides en fond de vallée qui se remplissent quand la rivière est haute."
+  }
+ },
+ "riparian-wetlands": {
+  "nl": {
+   "t": "Oeverwetlands",
+   "s": "Smalle natte zones langs beken die afstromend water bufferen voor het de beek bereikt."
+  },
+  "fr": {
+   "t": "Zones humides riveraines",
+   "s": "Des bandes humides le long des cours d’eau qui tamponnent le ruissellement avant qu’il n’atteigne l’eau."
+  }
+ },
+ "constructed-treatment-wetlands": {
+  "nl": {
+   "t": "Aangelegde (zuiverende) wetlands",
+   "s": "Beplante wetlands in of naast een sloot of beek die het doorstromende water zuiveren."
+  },
+  "fr": {
+   "t": "Zones humides construites (épuratrices)",
+   "s": "Des zones humides plantées dans ou à côté d’un fossé ou d’un ruisseau, qui épurent l’eau qui les traverse."
+  }
+ },
+ "peatland-rewetting": {
+  "nl": {
+   "t": "Vernatting van veengebieden",
+   "s": "Verhoog het waterpeil in gedraineerd veen zodat het niet uitdroogt, verbrandt of koolstof verliest."
+  },
+  "fr": {
+   "t": "Remouillage des tourbières",
+   "s": "Relever le niveau d’eau dans la tourbe drainée pour qu’elle cesse de s’assécher, de brûler et de libérer du carbone."
+  }
+ },
+ "wet-heath-fen-and-wet-grassland": {
+  "nl": {
+   "t": "Natte heide, ven en nat grasland",
+   "s": "Zeldzame natte habitats die terugkomen waar grondwater dicht onder het oppervlak staat."
+  },
+  "fr": {
+   "t": "Landes humides, bas-marais et prairies humides",
+   "s": "Des habitats humides rares qui reviennent là où la nappe est proche de la surface."
+  }
+ },
+ "floodplain-reconnection": {
+  "nl": {
+   "t": "Heraansluiting van de overstromingsvlakte",
+   "s": "Laat de rivier bij hoogwater weer buiten haar oevers treden op haar vlakte."
+  },
+  "fr": {
+   "t": "Reconnexion de la plaine inondable",
+   "s": "Laisser la rivière déborder à nouveau sur sa plaine lors des hautes eaux."
+  }
+ },
+ "dyke-lowering-or-set-back": {
+  "nl": {
+   "t": "Dijkverlaging of dijkverlegging",
+   "s": "Verlaag of verleg dijken zodat hoogwater ruimte krijgt om zich te spreiden."
+  },
+  "fr": {
+   "t": "Abaissement ou recul des digues",
+   "s": "Abaisser ou reculer les digues pour que les hautes eaux puissent s’étaler."
+  }
+ },
+ "river-re-meandering": {
+  "nl": {
+   "t": "Hermeandering van rivieren",
+   "s": "Geef een rechtgetrokken rivier haar bochten terug om water te vertragen en habitat te scheppen."
+  },
+  "fr": {
+   "t": "Reméandrage des rivières",
+   "s": "Rendre ses méandres à une rivière rectifiée pour ralentir l’eau et créer des habitats."
+  }
+ },
+ "raising-the-river-bed": {
+  "nl": {
+   "t": "Verhogen van de rivierbodem",
+   "s": "Maak vroegere verdieping ongedaan zodat rivierpeil en grondwater weer stijgen."
+  },
+  "fr": {
+   "t": "Rehausser le lit de la rivière",
+   "s": "Annuler un ancien approfondissement pour que le niveau de la rivière et la nappe remontent."
+  }
+ },
+ "beaver-dams-and-leaky-dams": {
+  "nl": {
+   "t": "Beverdammen en lekkende dammen",
+   "s": "Natuurlijke of houten barrières die water vasthouden in kleine beken."
+  },
+  "fr": {
+   "t": "Barrages de castors et barrages filtrants",
+   "s": "Des barrières naturelles ou en bois qui retiennent l’eau dans les petits cours d’eau."
+  }
+ },
+ "weirs-and-backwater-pools": {
+  "nl": {
+   "t": "Stuwen en stuwpanden",
+   "s": "Lage constructies die het zomerpeil in het landschap hoog houden."
+  },
+  "fr": {
+   "t": "Seuils et mouilles de retenue",
+   "s": "Des ouvrages bas qui maintiennent les niveaux d’eau d’été dans le paysage."
+  }
+ },
+ "riparian-buffers-and-riparian-forest": {
+  "nl": {
+   "t": "Oeverbuffers en oeverbos",
+   "s": "Bomen, struiken en gras langs waterlopen die de oever vasthouden en het water beschaduwen."
+  },
+  "fr": {
+   "t": "Bandes riveraines et ripisylves",
+   "s": "Arbres, arbustes et herbe le long des cours d’eau qui tiennent la berge et ombragent l’eau."
+  }
+ },
+ "buffer-and-filter-strips": {
+  "nl": {
+   "t": "Buffer- en filterstroken",
+   "s": "Grasstroken aan de akkerrand die afspoeling, slib en meststoffen opvangen."
+  },
+  "fr": {
+   "t": "Bandes tampons et filtrantes",
+   "s": "Des bandes enherbées en bordure de champ qui captent ruissellement, sédiments et engrais."
+  }
+ },
+ "hedgerows": {
+  "nl": {
+   "t": "Houtkanten en hagen",
+   "s": "Levende lijnen van struiken en bomen die afstroming vertragen en habitats verbinden."
+  },
+  "fr": {
+   "t": "Haies",
+   "s": "Des alignements vivants d’arbustes et d’arbres qui freinent le ruissellement et relient les habitats."
+  }
+ },
+ "grassed-waterways": {
+  "nl": {
+   "t": "Grasgangen",
+   "s": "Gras in de natuurlijke afvoerlijnen van een akker zodat er geen geulen ontstaan."
+  },
+  "fr": {
+   "t": "Chenaux enherbés",
+   "s": "De l’herbe dans les axes naturels d’écoulement d’un champ, pour qu’aucune ravine ne se forme."
+  }
+ },
+ "afforestation-and-reforestation": {
+  "nl": {
+   "t": "Bebossing en herbebossing",
+   "s": "Inheems bos op hellingen, in brongebieden en op aangetaste grond."
+  },
+  "fr": {
+   "t": "Boisement et reboisement",
+   "s": "Une forêt indigène sur les pentes, les têtes de bassin et les terres dégradées."
+  }
+ },
+ "conifer-to-broadleaf-conversion": {
+  "nl": {
+   "t": "Omvorming naald- naar loofbos",
+   "s": "Vervang dorstige naaldbomen door loofbomen zodat meer regen het grondwater bereikt."
+  },
+  "fr": {
+   "t": "Conversion résineux vers feuillus",
+   "s": "Remplacer des conifères gourmands en eau par des feuillus, pour que plus de pluie atteigne la nappe."
+  }
+ },
+ "heathland-restoration": {
+  "nl": {
+   "t": "Heideherstel",
+   "s": "Open heide die minder water verbruikt dan bos en zeldzame soorten herbergt."
+  },
+  "fr": {
+   "t": "Restauration des landes",
+   "s": "Une lande ouverte qui consomme moins d’eau que la forêt et abrite des espèces rares."
+  }
+ },
+ "grassland-restoration": {
+  "nl": {
+   "t": "Herstel van grasland",
+   "s": "Blijvend, soortenrijk grasland in plaats van kale akker."
+  },
+  "fr": {
+   "t": "Restauration de prairies",
+   "s": "Une prairie permanente et riche en espèces à la place de terres arables nues."
+  }
+ },
+ "agroforestry": {
+  "nl": {
+   "t": "Agroforestry",
+   "s": "Bomen in akkers of weiden: gewassen gecombineerd met schaduw en beschutting."
+  },
+  "fr": {
+   "t": "Agroforesterie",
+   "s": "Des arbres dans les champs ou les prairies, associant cultures, ombre et abri."
+  }
+ },
+ "retention-and-detention-ponds": {
+  "nl": {
+   "t": "Retentie- en bufferbekkens",
+   "s": "Vijvers die stormwater opvangen en langzaam weer afgeven."
+  },
+  "fr": {
+   "t": "Bassins de rétention et de détention",
+   "s": "Des bassins qui recueillent les eaux d’orage et les relâchent lentement."
+  }
+ },
+ "field-ponds-and-shallow-lakes": {
+  "nl": {
+   "t": "Poelen en ondiepe plassen",
+   "s": "Kleine waterpartijen die water bewaren voor droge periodes en dieren huisvesten."
+  },
+  "fr": {
+   "t": "Mares et plans d’eau peu profonds",
+   "s": "De petits plans d’eau qui stockent l’eau pour les périodes sèches et accueillent la faune."
+  }
+ },
+ "wadis": {
+  "nl": {
+   "t": "Wadi’s",
+   "s": "Ondiepe begroeide laagtes die regen verzamelen en laten infiltreren."
+  },
+  "fr": {
+   "t": "Noues d’infiltration",
+   "s": "Des creux enherbés peu profonds qui recueillent la pluie et la laissent s’infiltrer."
+  }
+ },
+ "infiltration-basins-and-fields": {
+  "nl": {
+   "t": "Infiltratiebekkens en -velden",
+   "s": "Ondiepe bekkens of velden waar schoon water naar de watervoerende laag zakt."
+  },
+  "fr": {
+   "t": "Bassins et champs d’infiltration",
+   "s": "Des bassins ou champs peu profonds où l’eau propre s’infiltre jusqu’à l’aquifère."
+  }
+ },
+ "managed-aquifer-recharge-mar": {
+  "nl": {
+   "t": "Kunstmatige grondwateraanvulling (MAR)",
+   "s": "Geplande aanvulling van grondwater in natte periodes, voor gebruik in droge."
+  },
+  "fr": {
+   "t": "Recharge maîtrisée des aquifères (MAR)",
+   "s": "Une recharge planifiée des nappes en période humide, pour l’utiliser en période sèche."
+  }
+ },
+ "injection-wells": {
+  "nl": {
+   "t": "Injectieputten",
+   "s": "Water rechtstreeks op diepte in de watervoerende laag brengen."
+  },
+  "fr": {
+   "t": "Puits d’injection",
+   "s": "De l’eau injectée directement dans l’aquifère, en profondeur."
+  }
+ },
+ "aquifer-storage-and-recovery-asr": {
+  "nl": {
+   "t": "Ondergrondse opslag en terugwinning (ASR)",
+   "s": "Sla in de winter water ondergronds op en win een deel terug in de zomer."
+  },
+  "fr": {
+   "t": "Stockage et récupération en aquifère (ASR)",
+   "s": "Stocker de l’eau sous terre en hiver et en récupérer une partie en été."
+  }
+ },
+ "bank-filtration": {
+  "nl": {
+   "t": "Oeverfiltratie",
+   "s": "Rivierwater dat op natuurlijke wijze door de oever naar het grondwater filtert."
+  },
+  "fr": {
+   "t": "Filtration sur berge",
+   "s": "L’eau de la rivière filtrée naturellement à travers la berge vers la nappe."
+  }
+ },
+ "infiltration-of-treated-or-reused-water": {
+  "nl": {
+   "t": "Infiltratie van gezuiverd of hergebruikt water",
+   "s": "Grondwater aanvullen met gezuiverd water in plaats van het te laten wegstromen."
+  },
+  "fr": {
+   "t": "Infiltration d’eaux traitées ou réutilisées",
+   "s": "Recharger la nappe avec de l’eau traitée au lieu de la laisser partir à la mer."
+  }
+ },
+ "controlled-drainage": {
+  "nl": {
+   "t": "Peilgestuurde drainage",
+   "s": "Regelbare stuwtjes houden water in het voorjaar en de zomer op het perceel en laten het in de winter gaan."
+  },
+  "fr": {
+   "t": "Drainage contrôlé",
+   "s": "Des seuils réglables gardent l’eau dans la parcelle au printemps et en été, et la libèrent en hiver."
+  }
+ },
+ "ditch-blocking": {
+  "nl": {
+   "t": "Afdammen van sloten",
+   "s": "Kleine dammen in sloten die water in het landschap vasthouden."
+  },
+  "fr": {
+   "t": "Obturation des fossés",
+   "s": "De petits barrages dans les fossés qui retiennent l’eau dans le paysage."
+  }
+ },
+ "ditch-filling": {
+  "nl": {
+   "t": "Dempen van sloten",
+   "s": "Verwijder overbodige sloten zodat de grond vanzelf weer vernat."
+  },
+  "fr": {
+   "t": "Comblement des fossés",
+   "s": "Supprimer les fossés devenus inutiles pour que le sol redevienne humide naturellement."
+  }
+ },
+ "removing-or-raising-field-drains": {
+  "nl": {
+   "t": "Verwijderen of verhogen van drainage",
+   "s": "Laat de natste percelen iets natter blijven, de laagste grond eerst."
+  },
+  "fr": {
+   "t": "Supprimer ou relever les drains",
+   "s": "Laisser les parcelles les plus humides un peu plus humides, les terres basses d’abord."
+  }
+ },
+ "lower-drainage-density": {
+  "nl": {
+   "t": "Minder drainage",
+   "s": "Minder drains in het landschap, meer water vastgehouden."
+  },
+  "fr": {
+   "t": "Moins de drainage",
+   "s": "Moins de drains dans le paysage, plus d’eau retenue."
+  }
+ },
+ "cover-crops": {
+  "nl": {
+   "t": "Groenbedekkers",
+   "s": "Houd de bodem in de winter bedekt om water, bodem en nutriënten vast te houden."
+  },
+  "fr": {
+   "t": "Cultures de couverture",
+   "s": "Garder le sol couvert en hiver pour retenir l’eau, le sol et les nutriments."
+  }
+ },
+ "reduced-or-no-tillage": {
+  "nl": {
+   "t": "Niet-kerende of geen grondbewerking",
+   "s": "Minder ploegen voor een betere bodemstructuur en meer infiltratie."
+  },
+  "fr": {
+   "t": "Travail du sol réduit ou nul",
+   "s": "Moins de labour pour une meilleure structure du sol et plus d’infiltration."
+  }
+ },
+ "conservation-agriculture": {
+  "nl": {
+   "t": "Conserveringslandbouw",
+   "s": "Bodembedekking, minimale bewerking en vruchtwisseling, samen."
+  },
+  "fr": {
+   "t": "Agriculture de conservation",
+   "s": "Couverture du sol, perturbation minimale et rotation des cultures, ensemble."
+  }
+ },
+ "contour-farming": {
+  "nl": {
+   "t": "Contourbewerking",
+   "s": "Ploeg en zaai langs de hoogtelijn zodat water niet bergaf raast."
+  },
+  "fr": {
+   "t": "Culture en courbes de niveau",
+   "s": "Labourer et semer selon les courbes de niveau pour que l’eau ne dévale pas la pente."
+  }
+ },
+ "terracing": {
+  "nl": {
+   "t": "Terrassen",
+   "s": "Treden op steile hellingen die erosie stoppen en water op het land houden."
+  },
+  "fr": {
+   "t": "Terrasses",
+   "s": "Des gradins sur les pentes raides qui stoppent l’érosion et gardent l’eau sur place."
+  }
+ },
+ "contour-and-stone-bunds": {
+  "nl": {
+   "t": "Contour- en stenen wallen",
+   "s": "Lage aarden of stenen wallen langs de hoogtelijn die afstroming en bodem opvangen."
+  },
+  "fr": {
+   "t": "Diguettes en terre et en pierre",
+   "s": "De petits murets en terre ou en pierre selon les courbes de niveau, qui retiennent eau et sol."
+  }
+ },
+ "check-dams-and-gully-restoration": {
+  "nl": {
+   "t": "Drempels en herstel van geulen",
+   "s": "Kleine barrières die geulen helen en grondwater aanvullen."
+  },
+  "fr": {
+   "t": "Seuils et restauration des ravines",
+   "s": "De petites barrières qui cicatrisent les ravines et rechargent la nappe."
+  }
+ },
+ "unsealing-and-depaving": {
+  "nl": {
+   "t": "Ontharden",
+   "s": "Vervang verharding door bodem en planten."
+  },
+  "fr": {
+   "t": "Désimperméabilisation",
+   "s": "Remplacer les surfaces dures par du sol et des plantes."
+  }
+ },
+ "rain-gardens-and-bioswales": {
+  "nl": {
+   "t": "Regentuinen en bioswales",
+   "s": "Beplante laagtes die straatwater opvangen en zuiveren."
+  },
+  "fr": {
+   "t": "Jardins de pluie et noues plantées",
+   "s": "Des creux plantés qui recueillent et épurent l’eau des rues."
+  }
+ },
+ "infiltration-crates-and-permeable-paving": {
+  "nl": {
+   "t": "Infiltratiekratten en waterdoorlatende verharding",
+   "s": "Laat regen wegzakken onder straten, pleinen en parkings."
+  },
+  "fr": {
+   "t": "Caissons d’infiltration et revêtements perméables",
+   "s": "Laisser la pluie s’infiltrer sous les rues, les places et les parkings."
+  }
+ },
+ "disconnecting-roofs-and-paved-areas": {
+  "nl": {
+   "t": "Afkoppelen van daken en verharding",
+   "s": "Stuur dakwater naar de bodem in plaats van de riolering."
+  },
+  "fr": {
+   "t": "Déconnexion des toitures et surfaces revêtues",
+   "s": "Envoyer l’eau des toits vers le sol plutôt que vers l’égout."
+  }
+ },
+ "green-roofs": {
+  "nl": {
+   "t": "Groendaken",
+   "s": "Beplante daken die regen bufferen, gebouwen koelen en insecten voeden."
+  },
+  "fr": {
+   "t": "Toitures végétalisées",
+   "s": "Des toits plantés qui stockent la pluie, rafraîchissent les bâtiments et nourrissent les insectes."
+  }
+ },
+ "urban-wetlands-and-parks": {
+  "nl": {
+   "t": "Stedelijke wetlands en parken",
+   "s": "Groenblauwe ruimtes die de stad koelen en stormwater bergen."
+  },
+  "fr": {
+   "t": "Zones humides et parcs urbains",
+   "s": "Des espaces verts et bleus qui rafraîchissent la ville et stockent les eaux d’orage."
+  }
+ },
+ "reducing-abstraction": {
+  "nl": {
+   "t": "Minder grondwater oppompen",
+   "s": "Pomp minder waar het grondwater onder druk staat."
+  },
+  "fr": {
+   "t": "Réduire les prélèvements",
+   "s": "Pomper moins là où la nappe est sous pression."
+  }
+ },
+ "moving-wells-and-seasonal-pumping-limits": {
+  "nl": {
+   "t": "Putten verplaatsen en seizoensgebonden pomplimieten",
+   "s": "Verander waar en wanneer water wordt opgepompt."
+  },
+  "fr": {
+   "t": "Déplacer les puits et limiter le pompage selon la saison",
+   "s": "Changer où et quand l’eau est pompée."
+  }
+ },
+ "water-reuse": {
+  "nl": {
+   "t": "Hergebruik van water",
+   "s": "Gebruik gezuiverd water opnieuw in plaats van vers grondwater op te pompen."
+  },
+  "fr": {
+   "t": "Réutilisation de l’eau",
+   "s": "Réutiliser l’eau traitée au lieu de pomper de l’eau souterraine fraîche."
+  }
+ }
+}

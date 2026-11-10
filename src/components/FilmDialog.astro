@@ -17,6 +17,7 @@
       e.preventDefault();
       const k = t.dataset.film;
       v.src = `/media/${k}.mp4`;
+      v.muted = false; v.volume = 1;
       cap.textContent = t.dataset.title || '';
       dlg.showModal();
       v.play().catch(() => {});

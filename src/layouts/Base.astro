@@ -2,32 +2,40 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import FilmDialog from '../components/FilmDialog.astro';
 import { SITE } from '../data/site';
+import { LANGS, basePath, lp, t, type Lang } from '../i18n/ui';
 import serif from '@fontsource/fraunces/files/fraunces-latin-600-normal.woff2?url';
 import sans from '@fontsource/manrope/files/manrope-latin-400-normal.woff2?url';
-interface Props { title: string; description: string; image?: string; noindex?: boolean }
-const { title, description, image = '/og-default.png', noindex = false } = Astro.props;
+interface Props { title: string; description: string; lang?: Lang; image?: string; noindex?: boolean }
+const { title, description, lang = 'en', image = '/og-default.png', noindex = false } = Astro.props;
+const T = t(lang);
+const base = basePath(Astro.url.pathname);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(image, Astro.site);
+const locale = { en: 'en_GB', nl: 'nl_BE', fr: 'fr_BE' }[lang];
 const org = {
   '@context': 'https://schema.org', '@type': 'ProfessionalService', name: SITE.name, url: Astro.site?.toString(),
   description: 'Nature-based Solutions consultancy: site selection, design, modelling and monitoring for floods, drought, groundwater and water quality.',
   email: SITE.email, telephone: SITE.phone,
   address: { '@type': 'PostalAddress', streetAddress: 'Pleinlaan 2', postalCode: '1050', addressLocality: 'Brussels', addressCountry: 'BE' },
-  areaServed: ['Belgium', 'Europe', 'Ethiopia', 'East Africa'],
+  areaServed: ['Belgium', 'Europe', 'Ethiopia', 'East Africa'], availableLanguage: ['en', 'nl', 'fr'],
   knowsAbout: ['Nature-based Solutions', 'IUCN Global Standard for Nature-based Solutions', 'hydrological modelling', 'groundwater modelling', 'suitability mapping', 'remote sensing'],
 };
 ---
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
+  {LANGS.map((l) => <link rel="alternate" hreflang={l} href={new URL(lp(l, base), Astro.site)} />)}
+  <link rel="alternate" hreflang="x-default" href={new URL(base, Astro.site)} />
   {noindex && <meta name="robots" content="noindex" />}
   <meta property="og:type" content="website" />
+  <meta property="og:locale" content={locale} />
   <meta property="og:site_name" content={SITE.name} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
@@ -42,9 +50,10 @@ const org = {
   <script type="application/ld+json" set:html={JSON.stringify(org)} />
 </head>
 <body>
-  <a class="skip" href="#main">Skip to content</a>
-  <Header />
+  <a class="skip" href="#main">{T.skip}</a>
+  <Header lang={lang} />
   <main id="main"><slot /></main>
-  <Footer />
+  <Footer lang={lang} />
+  <FilmDialog />
 </body>
 </html>

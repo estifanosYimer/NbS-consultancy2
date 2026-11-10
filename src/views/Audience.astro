@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import { bookHref } from '../data/site';
+import { toolsFor } from '../i18n/data';
+import { lp, t, type Lang } from '../i18n/ui';
+interface Props { lang: Lang; aud: string }
+const { lang, aud } = Astro.props;
+const T = t(lang); const U = T.aud; const a = (U as any)[aud];
+const L = (p: string) => lp(lang, p);
+const tools = toolsFor(lang).filter((x) => a.tools.includes(x.id));
+const others = Object.entries(T.audiences).filter(([k]) => k !== aud);
+---
+<Base title={`${a.h1} | NbS+C`} description={a.lead} lang={lang}>
+  <section class="phead cream"><div class="wrap">
+    <p class="eyebrow">{T.foot.foryou}</p><h1>{a.h1}</h1><p class="lead">{a.lead}</p>
+    <div class="cta-row"><a class="btn btn-primary" href={bookHref(lang)} data-track="book-call">{T.btn.book}</a><a class="btn btn-ghost" href={L('/#find')}>{T.btn.find} →</a></div>
+  </div></section>
+  <section><div class="wrap">
+    <div class="grid g2 two">
+      <div class="card"><h2 class="h">{U.problems}</h2><ul class="list">{a.problems.map((x: string) => <li>{x}</li>)}</ul></div>
+      <div class="card"><h2 class="h">{U.deliver}</h2><ul class="list">{a.deliver.map((x: string) => <li>{x}</li>)}</ul></div>
+    </div>
+    <h2 class="h" style="margin-top:40px">{U.tools}</h2>
+    <div class="grid g4">{tools.map((x) => <a class="card tc" href={L(`/tools/${x.id}/`)}><span class="q">{x.q}</span><b>{x.n}</b></a>)}</div>
+    <div class="note start"><b>{U.start}:</b> {a.start}</div>
+  </div></section>
+  <section class="cream"><div class="wrap">
+    <div class="grid g4">{others.map(([k, o]) => <a class="card" href={L(`/for/${k}/`)}><h3>{o.name}</h3><p class="muted" style="margin-top:6px;font-size:.93rem">{o.line}</p></a>)}</div>
+  </div></section>
+</Base>
+<style>
+  .h { font: 500 .78rem var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--gold-text); margin-bottom: 14px; }
+  .tc { display: grid; gap: 4px; } .tc b { font-family: var(--serif); font-size: 1.1rem; }
+  .q { font: 500 .7rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--gold-text); }
+  .start { margin-top: 32px; max-width: 80ch; }
+</style>

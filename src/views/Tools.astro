@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import { toolsFor } from '../i18n/data';
+import { lp, t, type Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const T = t(lang); const X = T.tools;
+const L = (p: string) => lp(lang, p);
+const tools = toolsFor(lang);
+---
+<Base title={X.title} description={X.desc} lang={lang}>
+  <section class="phead cream">
+    <div class="wrap">
+      <p class="eyebrow">{X.eyebrow}</p>
+      <h1>{X.h1}</h1>
+      <p class="lead">{X.lead}</p>
+    </div>
+  </section>
+  <section>
+    <div class="wrap">
+      <div class="grid g4 tg">
+        {tools.map((x, i) => (
+          <a class="card tool" href={L(`/tools/${x.id}/`)} id={x.id}>
+            <span class="top"><span class="num">{String(i + 1).padStart(2, '0')}</span><span class={`status ${x.statusClass}`}>{x.status}</span></span>
+            <span class="q">{x.q}</span>
+            <h2>{x.n}</h2>
+            <p>{x.plain}</p>
+            <span class="who">{x.w}</span>
+            <span class="go">{X.more}</span>
+          </a>
+        ))}
+      </div>
+      <p class="note" style="margin-top:32px;max-width:90ch" set:html={X.studioNote} />
+    </div>
+  </section>
+</Base>
+<style>
+  .tool { display: grid; gap: 10px; align-content: start; padding: 26px; }
+  .top { display: flex; justify-content: space-between; align-items: center; }
+  .num { font: 600 1.3rem var(--serif); color: var(--gold-text); }
+  .q { font: 500 .72rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--gold-text); }
+  .tool h2 { font-size: 1.35rem; }
+  .tool p { font-size: .94rem; color: var(--ink-soft); }
+  .who { font-size: .85rem; color: var(--ink-soft); border-top: 1px solid var(--line); padding-top: 10px; }
+  .go { font-weight: 700; color: var(--leaf); font-size: .92rem; }
+</style>

@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import posts from '../data/posts.json';
+import { lp, t, type Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const T = t(lang); const I = T.ins;
+---
+<Base title={I.title} description={I.desc} lang={lang}>
+  <section class="phead cream"><div class="wrap">
+    <p class="eyebrow">{I.eyebrow}</p><h1>{I.h1}</h1><p class="lead">{I.lead}</p>
+  </div></section>
+  <section><div class="wrap">
+    <div class="grid g2">
+      {posts.map((p) => (
+        <a class="card post" href={lp(lang, `/insights/${p.slug}/`)}>
+          <span class="meta">{p.meta}</span>
+          <h2 lang="en">{p.title}</h2>
+          <p lang="en" class="muted">{p.description}</p>
+          {lang !== 'en' && <span class="tag">{I.en}</span>}
+          <span class="go">{I.read}</span>
+        </a>
+      ))}
+    </div>
+  </div></section>
+</Base>
+<style>
+  .post { display: grid; gap: 10px; align-content: start; padding: 28px; }
+  .meta { font: 500 .74rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--gold-text); }
+  .post h2 { font-size: 1.5rem; }
+  .post .tag { justify-self: start; }
+  .go { font-weight: 700; color: var(--leaf); }
+</style>

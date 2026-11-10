@@ -1,0 +1,10 @@
+---
+import View from '../../../views/Audience.astro';
+import type { Lang } from '../../../i18n/ui';
+export async function getStaticPaths() {
+  const ids = ['municipalities', 'water-agencies', 'farmers', 'funders', 'researchers'];
+  return ['nl', 'fr'].flatMap((lang) => ids.map((aud) => ({ params: { lang, aud } })));
+}
+const { lang, aud } = Astro.params;
+---
+<View lang={lang as Lang} aud={aud!} />

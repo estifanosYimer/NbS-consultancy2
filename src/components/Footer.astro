@@ -1,38 +1,45 @@
 ---
 import Logo from './Logo.astro';
 import { SITE } from '../data/site';
+import { lp, t, type Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const T = t(lang);
 const year = new Date().getFullYear();
+const L = (p: string) => lp(lang, p);
 ---
 <footer class="foot">
   <div class="wrap cols">
     <div>
       <Logo light />
-      <p>Nature-based Solutions for hydroclimatic resilience, water quality and biodiversity. We follow the IUCN Global Standard for Nature-based Solutions in every project.</p>
+      <p>{T.foot.about}</p>
     </div>
     <div>
-      <h2>Explore</h2>
-      <a href="/solutions/">Solutions</a><a href="/services/">Services</a><a href="/tools/">Tools</a><a href="/projects/">Projects</a><a href="/about/">About</a><a href="/insights/">Insights</a>
+      <h2>{T.foot.explore}</h2>
+      <a href={L('/solutions/')}>{T.nav.solutions}</a><a href={L('/services/')}>{T.nav.services}</a><a href={L('/tools/')}>{T.nav.tools}</a><a href={L('/projects/')}>{T.nav.projects}</a><a href={L('/about/')}>{T.nav.about}</a><a href={L('/insights/')}>{T.nav.insights}</a>
     </div>
     <div>
-      <h2>For you</h2>
-      <a href="/for/municipalities/">Municipalities</a><a href="/for/water-agencies/">Water agencies</a><a href="/for/farmers/">Farmers and landowners</a><a href="/for/funders/">Funders and investors</a><a href="/for/researchers/">Researchers and students</a>
+      <h2>{T.foot.foryou}</h2>
+      {Object.entries(T.audiences).map(([k, a]) => <a href={L(`/for/${k}/`)}>{a.name}</a>)}
     </div>
     <div>
-      <h2>Contact</h2>
+      <h2>{T.foot.contact}</h2>
       <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
       <a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a>
       <span>{SITE.address[0]}<br />{SITE.address[1]}</span>
+      <a href={L('/contact/')} class="fbtn">{T.btn.write} →</a>
     </div>
   </div>
-  <div class="wrap bot"><span>© {year} {SITE.name}</span><span><a href="/privacy/">Privacy</a> · {SITE.tagline}</span></div>
+  <div class="wrap bot"><span>© {year} {SITE.name}</span><span><a href={L('/privacy/')}>{T.foot.privacy}</a> · {T.foot.tagline}</span></div>
 </footer>
 <style>
-  .foot { background: var(--forest); color: #cfe0d3; padding: 64px 0 28px; margin-top: 0; }
-  .cols { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.3fr; gap: 32px; }
-  .cols p { margin-top: 14px; font-size: .95rem; max-width: 36ch; }
+  .foot { background: var(--forest); color: #cfe0d3; padding: 64px 0 28px; }
+  .cols { display: grid; grid-template-columns: 1.6fr 1fr 1.1fr 1.4fr; gap: 32px; }
+  .cols p { margin-top: 14px; font-size: .95rem; max-width: 42ch; }
   h2 { font: 500 .75rem var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--gold-soft); margin-bottom: 12px; }
   .cols a, .cols span { display: block; color: #e7efe9; text-decoration: none; font-size: .95rem; padding: 3px 0; }
   .cols a:hover { color: #fff; text-decoration: underline; }
+  .cols .fbtn { margin-top: 10px; font-weight: 700; color: var(--gold-soft); }
   .bot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid rgba(255,255,255,.15); margin-top: 40px; padding-top: 20px; font-size: .88rem; }
   .bot a { color: #e7efe9; }
   @media (max-width: 900px) { .cols { grid-template-columns: 1fr 1fr; } }

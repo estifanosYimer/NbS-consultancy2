@@ -1,0 +1,11 @@
+---
+import View from '../../../views/Post.astro';
+import posts from '../../../data/posts.json';
+import type { Lang } from '../../../i18n/ui';
+export async function getStaticPaths() {
+  const ids = posts.map((p) => p.slug);
+  return ['nl', 'fr'].flatMap((lang) => ids.map((slug) => ({ params: { lang, slug } })));
+}
+const { lang, slug } = Astro.params;
+---
+<View lang={lang as Lang} slug={slug!} />

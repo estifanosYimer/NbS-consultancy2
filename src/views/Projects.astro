@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import { getImage } from 'astro:assets';
+import shot from '../assets/suitability-gui.jpg';
+import { bookHref } from '../data/site';
+import { lp, t, type Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const T = t(lang); const P = T.proj;
+const img = await getImage({ src: shot, width: 900, format: 'webp' });
+---
+<Base title={P.title} description={P.desc} lang={lang}>
+  <section class="phead cream"><div class="wrap">
+    <p class="eyebrow">{P.eyebrow}</p><h1>{P.h1}</h1><p class="lead">{P.lead}</p>
+  </div></section>
+  <section><div class="wrap">
+    <article class="card proj big">
+      <img src={img.src} alt="" width="900" height={Math.round(900 * shot.height / shot.width)} loading="lazy" />
+      <div>
+        <p class="eyebrow">{P.melleP}</p>
+        <h2>{P.melleT}</h2>
+        <p class="lead">{P.melleD}</p>
+        <div class="cta-row"><a class="btn btn-ghost" href={lp(lang, '/tools/suitability/')}>NbS Suitability Explorer →</a></div>
+      </div>
+    </article>
+    <div class="grid g2" style="margin-top:16px">
+      <article class="card proj"><span class="ph">{P.tag}</span><p class="eyebrow" style="margin-top:12px">{P.flP}</p><h2>{P.flT}</h2><p class="muted">{P.ph}</p></article>
+      <article class="card proj"><span class="ph">{P.tag}</span><p class="eyebrow" style="margin-top:12px">{P.etP}</p><h2>{P.etT}</h2><p class="muted">{P.ph}</p></article>
+    </div>
+    <div class="cta-row"><a class="btn btn-primary" href={bookHref(lang)} data-track="book-call">{T.btn.book}</a></div>
+  </div></section>
+</Base>
+<style>
+  .proj h2 { font-size: 1.5rem; margin: 8px 0 10px; }
+  .big { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(24px, 4vw, 56px); align-items: center; padding: clamp(16px, 2vw, 24px); }
+  .big img { width: 100%; height: auto; border-radius: 10px; }
+  @media (max-width: 900px) { .big { grid-template-columns: 1fr; } }
+</style>

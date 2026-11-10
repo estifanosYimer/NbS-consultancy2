@@ -1,0 +1,224 @@
+---
+import Base from '../layouts/Base.astro';
+import HeroArt from '../components/HeroArt.astro';
+import Finder from '../components/Finder.astro';
+import FilmCard from '../components/FilmCard.astro';
+import { getImage } from 'astro:assets';
+import { bookHref } from '../data/site';
+import { famsFor, solsFor, toolsFor } from '../i18n/data';
+import { fmt, lp, t, type Lang } from '../i18n/ui';
+import journey from '../assets/films/journey.jpg';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const T = t(lang); const H = T.home;
+const L = (p: string) => lp(lang, p);
+const poster = await getImage({ src: journey, width: 1280, format: 'webp' });
+const all = await solsFor(lang);
+const nbs = all.filter((s) => !s.supporting);
+const tools = toolsFor(lang);
+const families = famsFor(lang);
+const count = (f: string) => all.filter((s) => s.family === f).length;
+const strip = H.strip.map((x) => fmt(x, { n: nbs.length, t: tools.length }));
+---
+<Base title={H.title} description={H.desc} lang={lang}>
+  <!-- HERO -->
+  <section class="hero cream">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">{H.eyebrow}</p>
+        <h1>{H.h1a} <em>{H.h1b}</em></h1>
+        <p class="lead">{H.lead}</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#find">{T.btn.find} →</a>
+          <a class="btn btn-ghost" href={bookHref(lang)} data-track="book-call">{T.btn.book}</a>
+          <button class="btn btn-ghost" type="button" data-film="journey" data-title={H.proofCap}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>{T.btn.watch}
+          </button>
+        </div>
+      </div>
+      <HeroArt />
+    </div>
+  </section>
+
+  <!-- PROOF STRIP: only facts -->
+  <div class="strip">
+    <div class="wrap strip-in">
+      {strip.map((x) => <span set:html={x} />)}
+    </div>
+  </div>
+
+  <!-- FIND YOUR SOLUTION -->
+  <section id="find">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">{H.findEyebrow}</p>
+        <h2>{H.findH2a} <em>{H.findH2b}</em></h2>
+        <p class="lead">{H.findLead}</p>
+      </div>
+      <Finder lang={lang} />
+    </div>
+  </section>
+
+  <!-- WHO ARE YOU -->
+  <section class="cream">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">{H.audEyebrow}</p>
+        <h2>{H.audH2a} <em>{H.audH2b}</em></h2>
+      </div>
+      <div class="grid g5">
+        {Object.entries(T.audiences).map(([slug, a]) => (
+          <a class="card aud" href={L(`/for/${slug}/`)}><h3>{a.name}</h3><p>{a.line}</p><span class="go">{H.audGo}</span></a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW WE WORK + FILMS -->
+  <section>
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">{H.howEyebrow}</p>
+        <h2>{H.howH2a} <em>{H.howH2b}</em></h2>
+        <p class="lead">{H.howLead}</p>
+      </div>
+      <div class="grid g4">
+        {T.stages.map((s) => <FilmCard film={s.film} title={s.name} eyebrow={s.n} line={s.line} />)}
+      </div>
+      <p class="more"><a href={L('/services/')}>{H.howMore}</a></p>
+    </div>
+  </section>
+
+  <!-- IUCN STANDARD -->
+  <section class="cream">
+    <div class="wrap iucn">
+      <div>
+        <p class="eyebrow">{H.iucnEyebrow}</p>
+        <h2>{H.iucnH2a} <em>{H.iucnH2b}</em></h2>
+        <p class="lead">{H.iucnLead}</p>
+        <div class="sep"><Fragment set:html={H.iucnSep} /> <a href={L('/services/#standards')}>{H.iucnLink}</a></div>
+      </div>
+      <ol class="crit">
+        {T.criteria.map((c) => <li>{c}</li>)}
+      </ol>
+    </div>
+  </section>
+
+  <!-- SOLUTION FAMILIES -->
+  <section>
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">{fmt(H.famEyebrow, { n: nbs.length })}</p>
+        <h2>{H.famH2a} <em>{H.famH2b}</em></h2>
+        <p class="lead">{H.famLead}</p>
+      </div>
+      <div class="grid g3 wide">
+        {families.filter((f) => !f.support).map((f) => (
+          <a class="card fam" href={L(`/solutions/#${f.id}`)}>
+            <span class="cnt">{fmt(H.famCount, { n: count(f.id) })}</span>
+            <h3>{f.name}</h3><p>{f.intro}</p>
+          </a>
+        ))}
+      </div>
+      <p class="more"><a class="btn btn-primary" href={L('/solutions/')}>{fmt(H.famAll, { n: nbs.length })}</a></p>
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section class="cream">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">{H.toolsEyebrow}</p>
+        <h2>{H.toolsH2a} <em>{H.toolsH2b}</em></h2>
+        <p class="lead">{H.toolsLead}</p>
+      </div>
+      <div class="grid g4">
+        {tools.map((t) => (
+          <a class="card tool" href={L(`/tools/${t.id}/`)}><span class="q">{t.q}</span><h3>{t.n}</h3><span class={`status ${t.statusClass}`}>{t.status}</span></a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- PROOF -->
+  <section>
+    <div class="wrap proof">
+      <div>
+        <p class="eyebrow">{H.proofEyebrow}</p>
+        <h2>{H.proofH2a} <em>{H.proofH2b}</em></h2>
+        <p class="lead">{H.proofLead}</p>
+        <div class="cta"><a class="btn btn-ghost" href={L('/projects/')}>{H.proofBtn}</a></div>
+      </div>
+      <figure class="film big">
+        <video controls playsinline preload="none" poster={poster.src} aria-label={H.proofCap}>
+          <source src="/media/journey.mp4" type="video/mp4" />
+        </video>
+        <figcaption>{H.proofCap}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cream">
+    <div class="wrap">
+      <div class="band">
+        <p class="eyebrow light">{H.ctaEyebrow}</p>
+        <h2>{H.ctaH2a} <em>{H.ctaH2b}</em></h2>
+        <p>{H.ctaText}</p>
+        <div class="cta center">
+          <a class="btn btn-gold" href={bookHref(lang)} data-track="book-call">{T.btn.book}</a>
+          <a class="btn ghost-light" href={L('/contact/')}>{T.btn.write}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .hero { padding: clamp(56px, 8vw, 96px) 0; }
+  .hero-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 56px; align-items: center; }
+  .hero h1 { margin: 16px 0 18px; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+  .cta.center { justify-content: center; }
+  .strip { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--paper); }
+  .strip-in { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding-top: 18px; padding-bottom: 18px; font-size: .95rem; color: var(--ink-soft); }
+  .strip b { color: var(--forest); }
+  .aud h3 { font-size: 1.15rem; margin-bottom: 8px; }
+  .aud p { font-size: .94rem; color: var(--ink-soft); }
+  .go { display: block; margin-top: 12px; font-weight: 700; font-size: .9rem; color: var(--leaf); }
+  .film { background: #fff; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; padding: 0; text-align: left; font: inherit; color: inherit; cursor: pointer; transition: box-shadow .2s, transform .2s; }
+  .film:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+  .thumb { position: relative; display: block; aspect-ratio: 16 / 9; background: var(--sage-tint); }
+  .thumb :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .play { position: absolute; left: 12px; bottom: 12px; width: 40px; height: 40px; border-radius: 50%; background: var(--forest); display: grid; place-items: center; }
+  .dur { position: absolute; right: 10px; bottom: 12px; font: 500 .72rem var(--mono); background: rgba(252, 250, 245, .94); padding: 3px 8px; border-radius: 100px; color: var(--ink); }
+  .fb { display: grid; gap: 2px; padding: 14px 18px 18px; }
+  .fb b { font-family: var(--serif); font-size: 1.15rem; }
+  .fb > span:last-child { font-size: .92rem; color: var(--ink-soft); }
+  .more { margin-top: 28px; }
+  .more a:not(.btn) { font-weight: 700; }
+  .iucn { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
+  .iucn h2 { margin: 12px 0 14px; }
+  .sep { margin-top: 20px; border-left: 3px solid var(--gold); background: #fff; padding: 14px 18px; border-radius: 0 12px 12px 0; }
+  .crit { list-style: none; counter-reset: c; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .crit li { counter-increment: c; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px 14px 46px; position: relative; font-weight: 600; font-size: .95rem; }
+  .crit li::before { content: counter(c); position: absolute; left: 16px; top: 12px; font: 600 1.1rem var(--serif); color: var(--gold-text); }
+  .fam .cnt, .tool .q { font: 500 .72rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--gold-text); }
+  .fam h3 { margin: 8px 0 6px; } .fam p { font-size: .94rem; color: var(--ink-soft); }
+  .tool h3 { margin: 8px 0 10px; }
+  .proof { display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px; align-items: center; }
+  .proof h2 { margin: 12px 0 14px; }
+  .big { cursor: default; padding: 0; }
+  .big:hover { transform: none; }
+  .big video { width: 100%; display: block; background: #000; }
+  .big figcaption { padding: 12px 16px; font-size: .92rem; color: var(--ink-soft); }
+  .band { background: var(--forest); color: #e7efe9; border-radius: var(--r-lg); padding: clamp(36px, 6vw, 64px); text-align: center; }
+  .band h2 { color: #fff; margin: 10px 0 12px; } .band h2 em { color: var(--gold-soft); }
+  .band p { max-width: 60ch; margin: 0 auto; }
+  .light { color: var(--gold-soft); }
+  .ghost-light { border-color: rgba(255, 255, 255, .4); color: #fff; }
+  .ghost-light:hover { background: rgba(255, 255, 255, .1); }
+  @media (max-width: 1000px) { .hero-grid, .iucn, .proof { grid-template-columns: 1fr; } .strip-in { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .crit { grid-template-columns: 1fr; } .strip-in { grid-template-columns: 1fr; } }
+</style>

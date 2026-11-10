@@ -1,0 +1,8 @@
+---
+import View from '../../views/Audience.astro';
+export async function getStaticPaths() {
+  return ['municipalities', 'water-agencies', 'farmers', 'funders', 'researchers'].map((aud) => ({ params: { aud } }));
+}
+const { aud } = Astro.params;
+---
+<View lang="en" aud={aud!} />

@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import { lp, t, type Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const T = t(lang); const N = T.nf;
+---
+<Base title={N.title} description={N.p} lang={lang} noindex>
+  <section class="phead cream nf"><div class="wrap">
+    <p class="eyebrow">404</p>
+    <h1>{N.h1} <em>{N.h1b}</em></h1>
+    <p class="lead">{N.p}</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href={lp(lang, '/')}>{N.btn}</a>
+      <a class="btn btn-ghost" href={lp(lang, '/solutions/')}>{T.nav.solutions}</a>
+      <a class="btn btn-ghost" href={lp(lang, '/contact/')}>{T.nav.contact}</a>
+    </div>
+  </div></section>
+</Base>
+<style>.nf { min-height: 60vh; }</style>

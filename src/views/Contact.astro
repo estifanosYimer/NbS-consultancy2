@@ -1,0 +1,125 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../data/site';
+import { lp, t, type Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const T = t(lang); const C = T.contact;
+// Topic keys used in links: ?topic=call|site|design|model|monitor|crida|iucn|training|other|demo|measure
+const keys = ['call', 'site', 'design', 'model', 'monitor', 'crida', 'iucn', 'training', 'other'];
+const map = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('Vrije Universiteit Brussel, Pleinlaan 2, 1050 Brussels');
+const labels = {
+  benefits: T.benefits, landscapes: T.landscapes, scales: T.finder.scales, goals: T.finder.goals,
+  q: [T.finder.q1, T.finder.q2, T.finder.q3, T.finder.q4],
+};
+---
+<Base title={C.title} description={C.desc} lang={lang}>
+  <section class="phead cream"><div class="wrap">
+    <p class="eyebrow">{C.eyebrow}</p><h1>{C.h1}</h1><p class="lead">{C.lead}</p>
+  </div></section>
+  <section id="form"><div class="wrap grid-c">
+    <form class="card form" id="contact-form" action="https://formspree.io/f/xanoykkz" method="POST">
+      <div class="finderbox" id="finder-box" hidden><p class="eyebrow">{C.fromFinder}</p><ul id="finder-list"></ul></div>
+      <input type="hidden" name="language" value={lang} />
+      <input type="hidden" name="finder" id="finder-hidden" />
+      <input type="hidden" name="_subject" value="New enquiry from the NbS+C website" />
+      <div class="row2">
+        <label>{C.name}<input name="name" required autocomplete="name" /></label>
+        <label>{C.email}<input name="email" type="email" required autocomplete="email" /></label>
+      </div>
+      <label>{C.org}<input name="organisation" autocomplete="organization" /></label>
+      <label>{C.topic}
+        <select name="topic" id="topic">
+          {C.topics.map((x, i) => <option value={x} data-k={keys[i]}>{x}</option>)}
+        </select>
+      </label>
+      <p class="callnote" id="callnote">{C.callNote}</p>
+      <label>{C.message}<textarea name="message" id="message" rows="7" required></textarea></label>
+      <label class="hp" aria-hidden="true">Leave empty<input name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+      <button class="btn btn-primary" type="submit" data-sending={C.sending}>{C.send}</button>
+      <p class="status-msg" id="form-status" role="status" aria-live="polite"></p>
+      <p class="small muted"><a href={lp(lang, '/privacy/')}>{C.privacy}</a></p>
+    </form>
+    <aside class="info">
+      <div class="card"><p class="eyebrow">{C.emailL}</p><a href={`mailto:${SITE.email}`}>{SITE.email}</a></div>
+      <div class="card"><p class="eyebrow">{C.phoneL}</p><a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a></div>
+      <div class="card"><p class="eyebrow">{C.visitL}</p><p>{SITE.address[0]}<br />{SITE.address[1]}</p><a href={map} rel="noopener" target="_blank">{C.directions}</a></div>
+    </aside>
+  </div></section>
+</Base>
+<script type="application/json" id="contact-labels" set:html={JSON.stringify(labels)} />
+<div hidden id="contact-i18n" data-ok={C.ok} data-err={C.err}></div>
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  if (form) {
+    const p = new URLSearchParams(location.search);
+    const sel = document.getElementById('topic') as HTMLSelectElement;
+    const msg = document.getElementById('message') as HTMLTextAreaElement;
+    const note = document.getElementById('callnote')!;
+    const map: Record<string, string> = { demo: 'other', measure: 'other' };
+    const topic = p.get('topic');
+    if (topic) {
+      const k = map[topic] || topic;
+      const opt = [...sel.options].find((o) => o.dataset.k === k);
+      if (opt) sel.value = opt.value;
+    }
+    if (p.get('tool')) msg.value = `Demo: ${p.get('tool')}\n\n`;
+    if (p.get('measure')) msg.value = `${p.get('measure')}\n\n`;
+    const showNote = () => { note.hidden = sel.selectedIndex !== 0; };
+    sel.addEventListener('change', showNote); showNote();
+    // Answers from the solution finder
+    if (p.get('challenge')) {
+      const Lb = JSON.parse(document.getElementById('contact-labels')!.textContent || '{}');
+      const rows: [string, string | undefined][] = [
+        [Lb.q[0], Lb.benefits[p.get('challenge')!]], [Lb.q[1], Lb.landscapes[p.get('landscape') || '']],
+        [Lb.q[2], Lb.scales[p.get('scale') || '']], [Lb.q[3], Lb.goals[p.get('goal') || '']],
+      ];
+      const ok = rows.filter(([, v]) => v) as [string, string][];
+      const box = document.getElementById('finder-box')!;
+      const ul = document.getElementById('finder-list')!;
+      ok.forEach(([q, v]) => { const li = document.createElement('li'); li.innerHTML = `<span></span> <b></b>`; li.querySelector('span')!.textContent = q; li.querySelector('b')!.textContent = v; ul.appendChild(li); });
+      (document.getElementById('finder-hidden') as HTMLInputElement).value = ok.map(([q, v]) => `${q} ${v}`).join(' | ');
+      box.hidden = false;
+      const g = p.get('goal');
+      const k = g === 'where' ? 'site' : g === 'design' ? 'design' : g === 'prove' ? 'model' : g === 'track' ? 'monitor' : 'call';
+      const opt = [...sel.options].find((o) => o.dataset.k === k); if (opt) sel.value = opt.value; showNote();
+    }
+    const st = document.getElementById('form-status')!;
+    const i18n = document.getElementById('contact-i18n')!.dataset;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type=submit]') as HTMLButtonElement;
+      const label = btn.textContent; btn.disabled = true; btn.textContent = btn.dataset.sending || '…';
+      try {
+        const r = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+        if (!r.ok) throw new Error(String(r.status));
+        form.reset(); st.textContent = i18n.ok || 'Thank you.'; st.className = 'status-msg ok';
+      } catch {
+        st.textContent = i18n.err || 'Error'; st.className = 'status-msg err';
+      } finally { btn.disabled = false; btn.textContent = label; }
+    });
+  }
+</script>
+<style>
+  .grid-c { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(24px, 4vw, 56px); align-items: start; }
+  .form { display: grid; gap: 16px; padding: clamp(22px, 3vw, 36px); }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  label { display: grid; gap: 6px; font-weight: 600; font-size: .95rem; }
+  input, select, textarea { font: inherit; font-weight: 400; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); color: var(--ink); width: 100%; }
+  input:focus, select:focus, textarea:focus { outline: 3px solid var(--gold); outline-offset: 1px; }
+  .hp { position: absolute; left: -9999px; }
+  .callnote { font-size: .93rem; background: var(--sage-tint); padding: 10px 14px; border-radius: 10px; color: var(--forest); }
+  .callnote[hidden] { display: none; }
+  .finderbox { background: var(--cream); border-radius: 12px; padding: 14px 18px; }
+  .finderbox ul { list-style: none; display: grid; gap: 4px; margin-top: 8px; font-size: .94rem; }
+  .finderbox[hidden] { display: none; }
+  .form button { justify-self: start; }
+  .status-msg.ok { color: var(--forest); font-weight: 700; }
+  .status-msg.err { color: #a0402b; font-weight: 700; }
+  .small { font-size: .88rem; }
+  .info { display: grid; gap: 12px; }
+  .info a { font-weight: 700; word-break: break-word; }
+  .info .eyebrow { margin-bottom: 6px; }
+  @media (max-width: 900px) { .grid-c { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .row2 { grid-template-columns: 1fr; } }
+</style>

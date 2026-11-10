@@ -1,75 +1,67 @@
 ---
-import { getCollection } from 'astro:content';
-import tools from '../data/tools.json';
-import families from '../data/families.json';
-import { BENEFITS, LANDSCAPES, SITE } from '../data/site';
-
-const sols = (await getCollection('solutions'))
-  .filter((s) => !s.data.supporting)
-  .map((s) => ({ id: s.id, t: s.data.title, s: s.data.summary, f: s.data.family, b: s.data.benefits, l: s.data.landscapes, o: s.data.order }));
+import { bookHref } from '../data/site';
+import { lp, t, type Lang } from '../i18n/ui';
+import { famsFor, solsFor, toolsFor } from '../i18n/data';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const T = t(lang); const F = T.finder;
+const sols = (await solsFor(lang)).filter((s) => !s.supporting)
+  .map((s) => ({ id: s.id, t: s.title, s: s.summary, f: s.family, b: s.benefits, l: s.landscapes, o: s.order }));
 const data = {
   sols,
-  tools: Object.fromEntries(tools.map((t) => [t.id, { n: t.name, q: t.question }])),
-  fams: Object.fromEntries(families.map((f) => [f.id, f.name])),
+  tools: Object.fromEntries(toolsFor(lang).map((x) => [x.id, x.n])),
+  fams: Object.fromEntries(famsFor(lang).map((f) => [f.id, f.name])),
+  i: { look: F.look, tool: F.tool, and: F.and, step: F.step, steps: F.steps, studio: F.studio, sendThis: F.sendThis, iucn: F.iucn, book: T.btn.book },
+  base: lp(lang, '/'), book: bookHref(lang),
 };
-const challenges = ['floods', 'drought', 'groundwater', 'quality', 'erosion', 'heat', 'biodiversity'];
-const scales = [['site', 'One site or farm'], ['municipality', 'A town or municipality'], ['catchment', 'A whole catchment or region']];
-const goals = [['where', 'Find where to act'], ['design', 'Design a measure'], ['prove', 'Prove it will work'], ['track', 'Track results'], ['unsure', 'Not sure yet']];
+const challenges = ['floods', 'drought', 'groundwater', 'quality', 'erosion', 'heat', 'biodiversity'] as const;
 ---
 <div class="finder">
-  <form action="/contact/" method="get" class="qs" id="finder-form">
+  <form action={lp(lang, '/contact/')} method="get" class="qs" id="finder-form">
+    <input type="hidden" name="from" value="finder" />
     <fieldset>
-      <legend><span class="n">1</span> What is the main problem?</legend>
+      <legend><span class="n">1</span> {F.q1}</legend>
       <div class="opts">
-        {challenges.map((c, i) => <label><input type="radio" name="challenge" value={c} required={i === 0} /><span>{BENEFITS[c]}</span></label>)}
+        {challenges.map((c, i) => <label><input type="radio" name="challenge" value={c} required={i === 0} /><span>{T.benefits[c]}</span></label>)}
       </div>
     </fieldset>
     <fieldset>
-      <legend><span class="n">2</span> What kind of landscape?</legend>
+      <legend><span class="n">2</span> {F.q2}</legend>
       <div class="opts">
-        {Object.entries(LANDSCAPES).map(([k, v]) => <label><input type="radio" name="landscape" value={k} /><span>{v}</span></label>)}
+        {Object.entries(T.landscapes).map(([k, v]) => <label><input type="radio" name="landscape" value={k} /><span>{v}</span></label>)}
       </div>
     </fieldset>
     <fieldset>
-      <legend><span class="n">3</span> How big is the area?</legend>
+      <legend><span class="n">3</span> {F.q3}</legend>
       <div class="opts">
-        {scales.map(([k, v]) => <label><input type="radio" name="scale" value={k} /><span>{v}</span></label>)}
+        {Object.entries(F.scales).map(([k, v]) => <label><input type="radio" name="scale" value={k} /><span>{v}</span></label>)}
       </div>
     </fieldset>
     <fieldset>
-      <legend><span class="n">4</span> What do you need first?</legend>
+      <legend><span class="n">4</span> {F.q4}</legend>
       <div class="opts">
-        {goals.map(([k, v]) => <label><input type="radio" name="goal" value={k} /><span>{v}</span></label>)}
+        {Object.entries(F.goals).map(([k, v]) => <label><input type="radio" name="goal" value={k} /><span>{v}</span></label>)}
       </div>
     </fieldset>
-    <noscript><button class="btn btn-primary" type="submit">Send my answers →</button></noscript>
+    <noscript><button class="btn btn-primary" type="submit">{F.send}</button></noscript>
   </form>
 
   <aside class="res" aria-live="polite" id="finder-result">
-    <p class="eyebrow">Your starting point</p>
-    <h3>Answer the first question to see what fits.</h3>
-    <p class="muted">You will get three measures worth looking at, the tool that tests them and the right first step. No sign-up.</p>
+    <p class="eyebrow">{F.startEyebrow}</p>
+    <h3>{F.startH}</h3>
+    <p class="muted">{F.startP}</p>
   </aside>
 </div>
 <script type="application/json" id="finder-data" set:html={JSON.stringify(data)} />
-<script define:vars={{ booking: SITE.booking }}>
-  window.__nbscBooking = booking;
-</script>
 <script>
   type Sol = { id: string; t: string; s: string; f: string; b: string[]; l: string[]; o: number };
   const el = document.getElementById('finder-data');
   const form = document.getElementById('finder-form') as HTMLFormElement | null;
   const out = document.getElementById('finder-result');
   if (el && form && out) {
-    const D = JSON.parse(el.textContent || '{}') as { sols: Sol[]; tools: Record<string, { n: string; q: string }>; fams: Record<string, string> };
-    const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c] as string);
-    const STEP: Record<string, [string, string]> = {
-      where: ['01 Site selection', 'We map where each measure fits best across your area.'],
-      design: ['02 Design', 'We size and shape the measure for your site and its future climate.'],
-      prove: ['03 Modelling', 'We model the effect with and without the measure, today and in future climates.'],
-      track: ['04 Monitoring', 'We follow the site with satellite, drone and field data.'],
-      unsure: ['A free 20-minute call', 'We listen, then tell you honestly which step to start with.'],
-    };
+    const D = JSON.parse(el.textContent || '{}');
+    const I = D.i;
+    const esc = (s: string) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c] as string);
     const pickTool = (ch: string, goal: string, scale: string): string[] => {
       if (goal === 'track') return ['monitor'];
       if (goal === 'prove') {
@@ -83,30 +75,29 @@ const goals = [['where', 'Find where to act'], ['design', 'Design a measure'], [
       const fd = new FormData(form);
       const ch = String(fd.get('challenge') || ''), ls = String(fd.get('landscape') || ''), sc = String(fd.get('scale') || ''), goal = String(fd.get('goal') || 'unsure');
       if (!ch) return;
-      const scored = D.sols
+      const scored = (D.sols as Sol[])
         .map((s) => ({ s, v: (s.b.includes(ch) ? 3 + (3 - Math.min(s.b.indexOf(ch), 3)) * 0.4 : 0) + (ls && s.l.includes(ls) ? 2 : 0) - s.o * 0.05 }))
-        .filter((x) => x.v >= 3)
-        .sort((a, b) => b.v - a.v);
+        .filter((x) => x.v >= 3).sort((a, b) => b.v - a.v);
       const picks: Sol[] = []; const fams = new Set<string>();
       for (const x of scored) { if (picks.length === 3) break; if (!fams.has(x.s.f)) { picks.push(x.s); fams.add(x.s.f); } }
       const tl = pickTool(ch, goal, sc);
-      const [stepName, stepText] = STEP[goal] || STEP.unsure;
+      const [stepName, stepText] = I.steps[goal] || I.steps.unsure;
       const studio = goal === 'prove' && sc !== 'site'
-        ? `<p class="hint">Many people involved? A <a href="/tools/#studio">CRIDA-NbS Studio</a> workshop lets them build and stress-test plans together.</p>` : '';
-      const label = (k: string) => (document.querySelector(`input[value="${k}"] + span`)?.textContent || k);
+        ? `<p class="hint">${esc(I.studio).replace('{link}', `<a href="${D.base}tools/studio/">CRIDA-NbS Studio</a>`)}</p>` : '';
+      const label = (k: string) => (form.querySelector(`input[value="${k}"] + span`)?.textContent || k);
       out.innerHTML = `<p class="eyebrow">${esc(label(ch))}${ls ? ' · ' + esc(label(ls)) : ''}${sc ? ' · ' + esc(label(sc)) : ''}</p>
-        <h3>Look first at these ${picks.length}.</h3>
-        <ol class="picks">${picks.map((p) => `<li><a href="/solutions/${p.id}/"><b>${esc(p.t)}</b><span>${esc(p.s)}</span><em>${esc(D.fams[p.f] || '')}</em></a></li>`).join('')}</ol>
+        <h3>${esc(I.look.replace('{n}', String(picks.length)))}</h3>
+        <ol class="picks">${picks.map((p) => `<li><a href="${D.base}solutions/${p.id}/"><b>${esc(p.t)}</b><span>${esc(p.s)}</span><em>${esc(D.fams[p.f] || '')}</em></a></li>`).join('')}</ol>
         <div class="next">
-          <p><b>Tool that tests it:</b> ${tl.map((t) => `<a href="/tools/#${t}">${esc(D.tools[t].n)}</a>`).join(' and ')}</p>
-          <p><b>First step:</b> ${esc(stepName)}. ${esc(stepText)}</p>
+          <p><b>${esc(I.tool)}</b> ${tl.map((x) => `<a href="${D.base}tools/${x}/">${esc(D.tools[x])}</a>`).join(` ${esc(I.and)} `)}</p>
+          <p><b>${esc(I.step)}</b> ${esc(stepName)}. ${esc(stepText)}</p>
           ${studio}
         </div>
         <div class="acts">
-          <button class="btn btn-primary" type="submit" form="finder-form" data-track="finder-send">Send this to us →</button>
-          <a class="btn btn-ghost" href="${(window as any).__nbscBooking}" data-track="book-call">Book a 20-min call</a>
+          <button class="btn btn-primary" type="submit" form="finder-form" data-track="finder-send">${esc(I.sendThis)}</button>
+          <a class="btn btn-ghost" href="${D.book}" data-track="book-call">${esc(I.book)}</a>
         </div>
-        <p class="muted small">Every measure we propose is checked against the IUCN Global Standard for Nature-based Solutions.</p>`;
+        <p class="muted small">${esc(I.iucn)}</p>`;
     };
     form.addEventListener('change', render);
     render();
@@ -129,7 +120,7 @@ const goals = [['where', 'Find where to act'], ['design', 'Design a measure'], [
   .res :global(h3) { font-size: 1.6rem; margin: 8px 0 14px; }
   .res :global(.muted) { color: var(--ink-soft); }
   .res :global(.small) { font-size: .88rem; margin-top: 14px; }
-  .res :global(.picks) { list-style: none; display: grid; gap: 10px; counter-reset: p; }
+  .res :global(.picks) { list-style: none; display: grid; gap: 10px; }
   .res :global(.picks a) { display: grid; gap: 2px; padding: 14px 16px; border-radius: 12px; background: var(--cream); text-decoration: none; color: var(--ink); border: 1px solid transparent; }
   .res :global(.picks a:hover) { border-color: var(--mist); }
   .res :global(.picks b) { font-family: var(--serif); font-size: 1.08rem; }

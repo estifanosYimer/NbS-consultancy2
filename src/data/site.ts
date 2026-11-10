@@ -6,14 +6,11 @@ export const SITE = {
   phone: '+32 488 98 77 66',
   phoneHref: '+32488987766',
   address: ['Vrije Universiteit Brussel, Building T, Room 1.70', 'Pleinlaan 2, 1050 Brussels, Belgium'],
-  // PLACEHOLDER: your Cal.com (or similar) booking link.
-  booking: 'https://cal.com/YOUR-HANDLE/20min',
+  // Optional: paste a real booking link here (Cal.com, Calendly, Microsoft Bookings...).
+  // While it is empty, every "Book a 20-min call" button opens the contact form with the call topic selected.
+  booking: '',
 };
 
-export const BENEFITS: Record<string, string> = {
-  floods: 'Floods', drought: 'Drought', groundwater: 'Groundwater', quality: 'Water quality',
-  erosion: 'Erosion & soil', heat: 'Heat', biodiversity: 'Biodiversity', carbon: 'Carbon',
-};
-export const LANDSCAPES: Record<string, string> = {
-  city: 'City or town', farmland: 'Farmland', valley: 'River valley', hills: 'Hills and slopes', wet: 'Wetland or peat area',
-};
+import { lp, type Lang } from '../i18n/ui';
+/** Where "Book a 20-min call" goes: the booking link if set, otherwise the contact form. */
+export const bookHref = (lang: Lang) => SITE.booking || lp(lang, '/contact/?topic=call#form');

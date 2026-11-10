@@ -1,0 +1,9 @@
+---
+import View from '../../views/Solution.astro';
+import { getCollection } from 'astro:content';
+export async function getStaticPaths() {
+  return (await getCollection('solutions')).map((s) => s.id).map((id) => ({ params: { id } }));
+}
+const { id } = Astro.params;
+---
+<View lang="en" id={id!} />

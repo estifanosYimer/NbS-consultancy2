@@ -5,7 +5,15 @@
   "intro": "Wet landscapes that hold back floodwater, clean it, refill groundwater and lock up carbon.",
   "film": "wetland",
   "order": 0,
-  "support": false
+  "support": false,
+  "nl": {
+   "name": "Wetlands en veen",
+   "intro": "Natte landschappen die overstromingswater ophouden, zuiveren, grondwater aanvullen en koolstof vastleggen."
+  },
+  "fr": {
+   "name": "Zones humides et tourbières",
+   "intro": "Des paysages humides qui retiennent les crues, épurent l’eau, rechargent les nappes et stockent le carbone."
+  }
  },
  {
   "id": "rivers",
@@ -13,7 +21,15 @@
   "intro": "Give rivers room and natural shape, so floods spread safely and summer flows stay up.",
   "film": "flood",
   "order": 1,
-  "support": false
+  "support": false,
+  "nl": {
+   "name": "Rivieren en overstromingsvlaktes",
+   "intro": "Geef rivieren ruimte en een natuurlijke vorm, zodat overstromingen veilig uitzakken en zomerafvoeren op peil blijven."
+  },
+  "fr": {
+   "name": "Rivières et plaines inondables",
+   "intro": "Rendre aux rivières de l’espace et une forme naturelle, pour que les crues s’étalent sans danger et que les débits d’été se maintiennent."
+  }
  },
  {
   "id": "buffers",
@@ -21,7 +37,15 @@
   "intro": "Living strips along water and field edges that trap soil and nutrients and shade the water.",
   "film": "buffer",
   "order": 2,
-  "support": false
+  "support": false,
+  "nl": {
+   "name": "Oeverzones en bufferstroken",
+   "intro": "Levende stroken langs water en akkerranden die bodem en nutriënten vangen en het water beschaduwen."
+  },
+  "fr": {
+   "name": "Ripisylves et zones tampons",
+   "intro": "Des bandes vivantes le long de l’eau et des champs qui piègent sol et nutriments et ombragent l’eau."
+  }
  },
  {
   "id": "forests",
@@ -29,7 +53,15 @@
   "intro": "The right vegetation in the right place: cooler land, steadier soils and a better water balance.",
   "film": "forest",
   "order": 3,
-  "support": false
+  "support": false,
+  "nl": {
+   "name": "Bossen en bodembedekking",
+   "intro": "De juiste vegetatie op de juiste plek: koeler land, stabielere bodems en een betere waterbalans."
+  },
+  "fr": {
+   "name": "Forêts et couvert végétal",
+   "intro": "La bonne végétation au bon endroit : des terres plus fraîches, des sols plus stables et un meilleur bilan hydrique."
+  }
  },
  {
   "id": "ponds",
@@ -37,7 +69,15 @@
   "intro": "Small water bodies that catch storm water and keep a reserve for dry spells.",
   "film": null,
   "order": 4,
-  "support": false
+  "support": false,
+  "nl": {
+   "name": "Poelen en kleine buffers",
+   "intro": "Kleine waterpartijen die stormwater opvangen en een reserve houden voor droge periodes."
+  },
+  "fr": {
+   "name": "Mares et petits stockages",
+   "intro": "De petites pièces d’eau qui captent les pluies d’orage et gardent une réserve pour les périodes sèches."
+  }
  },
  {
   "id": "recharge",
@@ -45,7 +85,15 @@
   "intro": "Put water back underground when it is plentiful, so it is there when it is scarce.",
   "film": "aquifer",
   "order": 5,
-  "support": false
+  "support": false,
+  "nl": {
+   "name": "Grondwater en infiltratie",
+   "intro": "Breng water terug in de bodem wanneer het overvloedig is, zodat het er is wanneer het schaars wordt."
+  },
+  "fr": {
+   "name": "Nappes et recharge",
+   "intro": "Remettre l’eau sous terre quand elle abonde, pour qu’elle soit là quand elle manque."
+  }
  },
  {
   "id": "drainage",
@@ -53,7 +101,15 @@
   "intro": "Keep water in the landscape longer by managing drains and ditches more wisely.",
   "film": null,
   "order": 6,
-  "support": false
+  "support": false,
+  "nl": {
+   "name": "Drainage en peilbeheer",
+   "intro": "Houd water langer in het landschap door drains en grachten slimmer te beheren."
+  },
+  "fr": {
+   "name": "Drainage et gestion des niveaux",
+   "intro": "Garder l’eau plus longtemps dans le paysage en gérant mieux drains et fossés."
+  }
  },
  {
   "id": "farm",
@@ -61,7 +117,15 @@
   "intro": "Keep rain and soil where they fall, from Flemish fields to Ethiopian highlands.",
   "film": null,
   "order": 7,
-  "support": false
+  "support": false,
+  "nl": {
+   "name": "Landbouw- en bodemmaatregelen",
+   "intro": "Houd regen en bodem waar ze vallen, van Vlaamse akkers tot Ethiopische hooglanden."
+  },
+  "fr": {
+   "name": "Mesures agricoles et sols",
+   "intro": "Garder la pluie et le sol là où ils tombent, des champs flamands aux hauts plateaux éthiopiens."
+  }
  },
  {
   "id": "urban",
@@ -69,7 +133,15 @@
   "intro": "Cooler, spongier cities that store rain where it falls.",
   "film": null,
   "order": 8,
-  "support": false
+  "support": false,
+  "nl": {
+   "name": "Stedelijk groen en blauw",
+   "intro": "Koelere steden die als een spons werken en regen opslaan waar hij valt."
+  },
+  "fr": {
+   "name": "Vert et bleu en ville",
+   "intro": "Des villes plus fraîches, comme des éponges, qui stockent la pluie là où elle tombe."
+  }
  },
  {
   "id": "support",
@@ -77,6 +149,14 @@
   "intro": "Not Nature-based Solutions in themselves, but often needed alongside them to close the water balance. We model them so the picture is complete.",
   "film": null,
   "order": 9,
-  "support": true
+  "support": true,
+  "nl": {
+   "name": "Ondersteunende maatregelen",
+   "intro": "Zelf geen natuurgebaseerde oplossingen, maar vaak nodig ernaast om de waterbalans rond te krijgen. We modelleren ze zodat het beeld volledig is."
+  },
+  "fr": {
+   "name": "Mesures d’accompagnement",
+   "intro": "Pas des solutions fondées sur la nature en soi, mais souvent nécessaires à côté pour boucler le bilan hydrique. Nous les modélisons pour un tableau complet."
+  }
  }
 ]
