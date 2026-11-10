@@ -1,8 +1,10 @@
 ---
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-interface Props { film: string; title: string; eyebrow?: string; line?: string; dur?: string }
-const { film, title, eyebrow, line, dur = '0:30' } = Astro.props;
+interface Props { film: string; title: string; eyebrow?: string; line?: string }
+import D from '../data/film-durations.json';
+const { film, title, eyebrow, line } = Astro.props;
+const dur = (D as Record<string, string>)[film] ?? '';
 const imgs = import.meta.glob<{ default: ImageMetadata }>('../assets/films/*.jpg', { eager: true });
 const img = imgs[`../assets/films/${film}.jpg`]?.default;
 ---

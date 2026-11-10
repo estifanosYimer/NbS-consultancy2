@@ -1,7 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import { bookHref } from '../data/site';
-import { LANGS, basePath, lp, t, type Lang } from '../i18n/ui';
+import { LANGS, LANG_NAMES, basePath, lp, t, type Lang } from '../i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const T = t(lang);
@@ -20,9 +20,12 @@ const Langs = LANGS.map((l) => ({ l, href: lp(l, base), cur: l === lang }));
       {NAV.map(([h, n]) => <a href={lp(lang, h)} aria-current={on(h) ? 'page' : undefined}>{n}</a>)}
     </nav>
     <div class="right">
-      <nav class="langs desk-l" aria-label={T.nav.language}>
-        {Langs.map(({ l, href, cur }) => <a href={href} hreflang={l} lang={l} aria-current={cur ? 'true' : undefined}>{l.toUpperCase()}</a>)}
-      </nav>
+      <details class="lang">
+        <summary aria-label={`${T.nav.language}: ${LANG_NAMES[lang]}`}><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.6 2.8 3.9 6 3.9 9.5s-1.3 6.7-3.9 9.5c-2.6-2.8-3.9-6-3.9-9.5s1.3-6.7 3.9-9.5z"/></svg><span>{lang.toUpperCase()}</span><svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+        <ul class="menu" role="list">
+          {Langs.map(({ l, href, cur }) => <li><a href={href} hreflang={l} lang={l} aria-current={cur ? 'true' : undefined}><b>{l.toUpperCase()}</b> {LANG_NAMES[l]}{cur && <span class="tick" aria-hidden="true">✓</span>}</a></li>)}
+        </ul>
+      </details>
       <a href={lp(lang, '/contact/')} class="btn btn-ghost btn-small desk" aria-current={on('/contact/') ? 'page' : undefined}>{T.nav.contact}</a>
       <a href={bookHref(lang)} class="btn btn-primary btn-small book" data-track="book-call">{T.btn.book}</a>
       <details class="mob">
@@ -33,6 +36,7 @@ const Langs = LANGS.map((l) => ({ l, href: lp(l, base), cur: l === lang }));
             <a href={lp(lang, '/contact/')}>{T.nav.contact}</a>
           </nav>
           <nav class="langs" aria-label={T.nav.language}>
+            <span class="g"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.6 2.8 3.9 6 3.9 9.5s-1.3 6.7-3.9 9.5c-2.6-2.8-3.9-6-3.9-9.5s1.3-6.7 3.9-9.5z"/></svg></span>
             {Langs.map(({ l, href, cur }) => <a href={href} hreflang={l} lang={l} aria-current={cur ? 'true' : undefined}>{l.toUpperCase()}</a>)}
           </nav>
         </div>
@@ -42,7 +46,7 @@ const Langs = LANGS.map((l) => ({ l, href: lp(l, base), cur: l === lang }));
 </header>
 <script>
   // Close the mobile menu after choosing a link or tapping outside it.
-  document.querySelectorAll<HTMLDetailsElement>('details.mob').forEach((d) => {
+  document.querySelectorAll<HTMLDetailsElement>('details.mob, details.lang').forEach((d) => {
     d.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) d.open = false; });
     document.addEventListener('click', (e) => { if (d.open && !d.contains(e.target as Node)) d.open = false; });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') d.open = false; });
@@ -56,8 +60,20 @@ const Langs = LANGS.map((l) => ({ l, href: lp(l, base), cur: l === lang }));
   nav a { color: var(--ink-soft); font-weight: 600; font-size: .95rem; text-decoration: none; padding: 8px 12px; border-radius: 100px; white-space: nowrap; }
   nav a:hover, nav a[aria-current] { color: var(--forest); background: var(--sage-tint); }
   .right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-  .langs { display: flex; gap: 2px; border: 1px solid var(--line); border-radius: 100px; padding: 3px; background: var(--paper); }
-  .langs a { font: 600 .78rem var(--mono); padding: 6px 9px; letter-spacing: .04em; }
+  .lang { position: relative; }
+  .lang summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; font: 700 .9rem var(--sans); color: var(--forest); border: 1px solid var(--line); background: var(--paper); border-radius: 100px; padding: 8px 13px; }
+  .lang summary::-webkit-details-marker { display: none; }
+  .lang summary:hover, .lang[open] summary { border-color: var(--leaf); background: var(--sage-tint); }
+  .lang[open] .chev { transform: rotate(180deg); }
+  .menu { list-style: none; position: absolute; right: 0; top: calc(100% + 8px); background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); padding: 6px; min-width: 200px; z-index: 60; }
+  .menu a { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; color: var(--ink); font-weight: 600; text-decoration: none; }
+  .menu a b { font: 600 .78rem var(--mono); color: var(--leaf); width: 22px; }
+  .menu a:hover { background: var(--sage-tint); }
+  .menu a[aria-current] { background: var(--sage-tint); color: var(--forest); }
+  .tick { margin-left: auto; color: var(--leaf); }
+  .langs { display: flex; align-items: center; gap: 4px; border: 1px solid var(--line); border-radius: 100px; padding: 4px; background: #fff; }
+  .langs .g { display: grid; place-items: center; padding: 0 8px; color: var(--forest); }
+  .langs a { font: 600 .82rem var(--mono); padding: 8px 10px; }
   .langs a[aria-current] { background: var(--forest); color: #fff; }
   .mob { display: none; position: relative; }
   .mob summary { list-style: none; cursor: pointer; padding: 10px 6px; }
@@ -71,7 +87,8 @@ const Langs = LANGS.map((l) => ({ l, href: lp(l, base), cur: l === lang }));
   .panel nav:first-child a { padding: 12px 14px; font-size: 1.05rem; }
   .panel .langs { justify-content: space-between; }
   .panel .langs a { flex: 1; text-align: center; }
-  @media (max-width: 1240px) { .desk { display: none !important; } .desk-l { display: none !important; } .mob { display: block; } }
+  @media (max-width: 1240px) { .desk { display: none !important; } .mob { display: block; } }
+  @media (max-width: 560px) { .lang summary span, .lang .chev { display: none; } .lang summary { padding: 8px 10px; } }
   @media (max-width: 480px) { .book { padding: 8px 12px; font-size: .8rem; } .bar { gap: 10px; } }
   @media (max-width: 380px) { .book { white-space: normal; text-align: center; line-height: 1.15; max-width: 150px; } }
 </style>
